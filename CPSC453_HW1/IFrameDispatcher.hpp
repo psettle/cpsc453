@@ -1,6 +1,9 @@
+#ifndef IFRAMEDISPATCHER_H
+#define IFRAMEDISPATCHER_H
+
 /**
-file: system.hpp
-brief: declaration of top level system driver
+file: IFrameListener.hpp
+brief: Interface for receiving frame events.
 notes:
 */
 
@@ -8,8 +11,7 @@ notes:
                         INCLUDES
 **********************************************************/
 
-#include "System.hpp"
-#include "AppManager.hpp"
+#include "IFrameListener.hpp"
 
 /**********************************************************
                         CONSTANTS
@@ -19,15 +21,25 @@ notes:
                        DECLARATIONS
 **********************************************************/
 
+class IFrameDispatcher
+{
+public:
+    /**
+        Register a listener for frame events.
+     */
+    virtual void RegisterFrameListener(IFrameListener* listener) = 0;
+    /**
+        Unregister a listener for frame events.
+
+        return:
+            true on success,
+            false on failure (listener was not registered)
+    */
+    virtual bool UnregisterFrameListener(IFrameListener* listener) = 0;
+};
+
 /**********************************************************
                        DEFINITIONS
 **********************************************************/
 
-int main()
-{
-    System system = System();
-
-    AppManager appManager = AppManager(&system, &system);
-
-    system.Run();
-}
+#endif /* IFRAMEDISPATCHER_H */

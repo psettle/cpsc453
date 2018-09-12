@@ -1,6 +1,9 @@
+#ifndef IAPP_H
+#define IAPP_H
+
 /**
-file: system.hpp
-brief: declaration of top level system driver
+file: IApp.hpp
+brief: Interface for "apps" (Parts of assignments)
 notes:
 */
 
@@ -8,8 +11,8 @@ notes:
                         INCLUDES
 **********************************************************/
 
-#include "System.hpp"
-#include "AppManager.hpp"
+#include "common.h"
+#include "IFrameListener.hpp"
 
 /**********************************************************
                         CONSTANTS
@@ -19,15 +22,18 @@ notes:
                        DECLARATIONS
 **********************************************************/
 
+class IApp : IFrameListener
+{
+public:
+    virtual void SetNumber(uint32 number) = 0;
+
+    virtual ~IApp() = 0;
+};
+
+inline IApp::~IApp() {}
+
 /**********************************************************
                        DEFINITIONS
 **********************************************************/
 
-int main()
-{
-    System system = System();
-
-    AppManager appManager = AppManager(&system, &system);
-
-    system.Run();
-}
+#endif /* IAPP_H */

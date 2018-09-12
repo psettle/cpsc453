@@ -94,6 +94,24 @@ bool System::UnregisterFrameListener(IFrameListener* listener)
     return false;
 }
 
+KeyStateEnum System::GetKey(uint16 glfw_key_enum)
+{
+    uint8 key_state = glfwGetKey(pWindowM, glfw_key_enum);
+
+    switch (key_state)
+    {
+    case GLFW_RELEASE:
+        return KEY_STATE_RELEASE;
+    case GLFW_PRESS:
+        return KEY_STATE_PRESS;
+    case GLFW_REPEAT:
+        return KEY_STATE_REPEAT;
+    default:
+        std::cerr << "Invalid return from glfwGetKey key: " << glfw_key_enum << " return: " << static_cast<uint16>( key_state ) << std::endl;
+        return KEY_STATE_COUNT;
+    }
+}
+
 void System::RequestShutdown()
 {
     shouldShutdownM = true;

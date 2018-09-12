@@ -13,7 +13,9 @@ notes:
 
 #include <vector>
 
+#include "IFrameDispatcher.hpp"
 #include "IFrameListener.hpp"
+#include "IInputPoller.hpp"
 #include "common.h"
 
 /**********************************************************
@@ -23,29 +25,13 @@ notes:
 /**********************************************************
                        DECLARATIONS
 **********************************************************/
-class System
+class System : public IFrameDispatcher, public IInputPoller
 {
 public:
     /**
         Initialize window and opengl.
      */
     System();
-
-    /**
-        Register a new object to receive frame events.
-
-        This class will NOT free resources associated with listeners on removal or shutdown.
-     */
-    void RegisterFrameListener(IFrameListener* listener);
-
-    /**
-        Unregister an existing object that was receiving frame events.
-
-        return:
-            true on success
-            false on fail (listener was not registered)
-     */
-    bool UnregisterFrameListener(IFrameListener* listener);
 
     /**
         Request that the system shutdown after freeing resources;
@@ -56,6 +42,17 @@ public:
         Run the application to completion.
      */
     void Run();
+
+    /**
+        Implementation of IFrameDispatcher
+    */
+    void RegisterFrameListener(IFrameListener* listener);
+    bool UnregisterFrameListener(IFrameListener* listener);
+
+    /**
+        Implementation of IInputPoller
+     */
+    virtual KeyStateEnum GetKey(uint16 glfw_key_enum);
 
     /**
         Deinit opengl, shutdown window, free resources.

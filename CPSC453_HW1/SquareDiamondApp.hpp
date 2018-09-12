@@ -1,6 +1,9 @@
+#ifndef SQUAREDIAMONDAPP_H
+#define SQUAREDIAMONDAPP_H
+
 /**
-file: system.hpp
-brief: declaration of top level system driver
+file: SquareDiamondApp.hpp
+brief: An app that shows overlayed squares and diamonds
 notes:
 */
 
@@ -8,8 +11,8 @@ notes:
                         INCLUDES
 **********************************************************/
 
-#include "System.hpp"
-#include "AppManager.hpp"
+#include "IApp.hpp"
+#include "IFrameDispatcher.hpp"
 
 /**********************************************************
                         CONSTANTS
@@ -19,15 +22,29 @@ notes:
                        DECLARATIONS
 **********************************************************/
 
+class SquareDiamondApp : public IApp
+{
+public:
+    SquareDiamondApp(IFrameDispatcher* dispatcher);
+
+    ~SquareDiamondApp();
+
+    virtual void OnFrame();
+
+    virtual void SetNumber(uint32 number);
+
+    void CreateShapes();
+
+    void DestroyShapes();
+
+protected:
+
+    uint8               currentShapeCountM = 1;
+    IFrameDispatcher*   pFrameDispatcherM = nullptr;
+};
+
 /**********************************************************
                        DEFINITIONS
 **********************************************************/
 
-int main()
-{
-    System system = System();
-
-    AppManager appManager = AppManager(&system, &system);
-
-    system.Run();
-}
+#endif /* SQUAREDIAMONDAPP_H */

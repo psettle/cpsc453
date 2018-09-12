@@ -120,12 +120,18 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="AppManager.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="SquareDiamondApp.cpp" />
     <ClCompile Include="System.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AppManager.hpp" />
     <ClInclude Include="common.h" />
+    <ClInclude Include="IApp.hpp" />
+    <ClInclude Include="IFrameDispatcher.hpp" />
     <ClInclude Include="IFrameListener.hpp" />
+    <ClInclude Include="IInputPoller.hpp" />
     <ClInclude Include="include\GLFW\glfw3.h" />
     <ClInclude Include="include\GLFW\glfw3native.h" />
     <ClInclude Include="include\glm\common.hpp" />
@@ -275,6 +281,7 @@
     <ClInclude Include="include\GL\glxew.h" />
     <ClInclude Include="include\GL\wglew.h" />
     <ClInclude Include="include\SOIL.h" />
+    <ClInclude Include="SquareDiamondApp.hpp" />
     <ClInclude Include="System.hpp" />
     <ClInclude Include="template.hpp" />
   </ItemGroup>
