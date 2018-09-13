@@ -1,9 +1,9 @@
-#ifndef SQUAREDIAMONDAPP_H
-#define SQUAREDIAMONDAPP_H
+#ifndef POLYGON_H
+#define POLYGON_H
 
 /**
-file: SquareDiamondApp.hpp
-brief: An app that shows overlayed squares and diamonds
+file: Polygon.hpp
+brief: A collection of OpenGL Triangles with a color.
 notes:
 */
 
@@ -11,9 +11,10 @@ notes:
                         INCLUDES
 **********************************************************/
 
-#include "IApp.hpp"
+#include "common.h"
+#include "IFrameListener.hpp"
 #include "IFrameDispatcher.hpp"
-#include "Square.hpp"
+#include "PolygonShader.hpp"
 
 /**********************************************************
                         CONSTANTS
@@ -23,30 +24,31 @@ notes:
                        DECLARATIONS
 **********************************************************/
 
-class SquareDiamondApp : public IApp
+class Polygon : public IFrameListener
 {
 public:
-    SquareDiamondApp(IFrameDispatcher* dispatcher);
-
-    ~SquareDiamondApp();
+    void Configure(IFrameDispatcher* dispatcher, std::vector<glm::vec3> const & vertices, glm::vec3 const & color, glm::vec3 const & postition);
 
     virtual void OnFrame();
 
-    virtual void SetNumber(uint32 number);
-
-    void CreateShapes();
-
-    void DestroyShapes();
-
+    virtual ~Polygon();
 protected:
 
-    uint8                   currentShapeCountM = 1;
-    IFrameDispatcher*       pFrameDispatcherM = nullptr;
-    std::vector<Polygon*>   activeShapesM;
+private:
+    GLuint vertexArrayHandleM = 0;
+    GLuint vertexCountM = 0;
+    std::vector<GLuint> buffersToFreeM;
+
+    bool isConfiguredM = false;
+    IFrameDispatcher* pFrameDispatcherM = nullptr;
+
+    static PolygonShader* shader;
 };
 
 /**********************************************************
                        DEFINITIONS
 **********************************************************/
 
-#endif /* SQUAREDIAMONDAPP_H */
+
+
+#endif /* POLYGON_H */

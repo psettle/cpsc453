@@ -16,6 +16,8 @@ notes:
 
 static const uint8 DEFAULT_SHAPE_COUNT = 1;
 static const uint8 MAX_SHAPE_COUNT = UINT8_MAX;
+static const GLdouble SIDE_LEN_FACTOR = 1.0 / sqrt(2.0);
+static const GLfloat SQUARE_DEPTH_OFFSET = -0.0001f;
 
 /**********************************************************
                        DECLARATIONS
@@ -34,6 +36,7 @@ SquareDiamondApp::SquareDiamondApp(IFrameDispatcher* dispatcher)
 SquareDiamondApp::~SquareDiamondApp()
 {
     DestroyShapes();
+    std::cout << "app stopped" << std::endl;
 }
 
 void SquareDiamondApp::OnFrame()
@@ -55,15 +58,24 @@ void SquareDiamondApp::SetNumber(uint32 number)
 
 void SquareDiamondApp::CreateShapes()
 {
+    GLfloat depth = 0.0f;
+    GLdouble side_len = 2.0f;
+    glm::vec3 red = glm::vec3(1.0f, 0.0f, 0.0f);
+    glm::vec3 blue = glm::vec3(0.0f, 0.0f, 1.0f);
+
+    GLfloat shade_difference = 1.0f / currentShapeCountM;
+
     for (uint16 i = 0; i < currentShapeCountM; ++i)
     {
-        auto pSquare = new Square(pFrameDispatcherM, side_len, 0, color);
+        side_len *= SIDE_LEN_FACTOR;
+        activeShapesM.push_back(new Square(pFrameDispatcherM, side_len, 0, red, depth));
+        red.x -= shade_difference;
+        depth += SQUARE_DEPTH_OFFSET;
 
-        activeShapesM.push_back(pSquare);
-
-        auto pDiamond = new Square(pFrameDispatcherM, side_len, PI_D / 4, color);
-
-        activeShapesM.push_back(pDiamond);
+        side_len *= SIDE_LEN_FACTOR;
+        activeShapesM.push_back(new Square(pFrameDispatcherM, side_len, PI_D / 4, blue, depth));
+        blue.z -= shade_difference;
+        depth += SQUARE_DEPTH_OFFSET;
     }
 }
 

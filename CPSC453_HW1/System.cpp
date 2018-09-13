@@ -13,10 +13,10 @@ notes:
 /**********************************************************
                         CONSTANTS
 **********************************************************/
-static const uint16 WINDOW_WIDTH = 1920;
+static const uint16 WINDOW_WIDTH = 1080;
 static const uint16 WINDOW_HEIGHT = 1080;
 static const std::string WINDOW_NAME = "CPSC453_HW1";
-static const bool FULLSCREEN_ENABLE = false;
+#define FULLSCREEN_ENABLE false
 
 /**********************************************************
                        DECLARATIONS
@@ -43,7 +43,7 @@ System::System()
 #if FULLSCREEN_ENABLE
     pWindowM = glfwCreateWindow(WINDOW_WIDTH, WINDOW_HEIGHT, WINDOW_NAME.c_str(), glfwGetPrimaryMonitor(), NULL);
 #else
-    pWindowM = glfwCreateWindow(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2, WINDOW_NAME.c_str(), NULL, NULL);
+    pWindowM = glfwCreateWindow(WINDOW_WIDTH / 1.3, WINDOW_HEIGHT / 1.3, WINDOW_NAME.c_str(), NULL, NULL);
 #endif
 
     /* if the window creation failed, return */
@@ -63,13 +63,13 @@ System::System()
     }
 
     /* this keeps faces nearer to the camera on top */
-    glEnable(GL_DEPTH_TEST);
-    glDepthFunc(GL_LESS);
+    //glEnable(GL_DEPTH_TEST);
+    //glDepthFunc(GL_LESS);
 
     /* this tells openGL not to bother rendering faces that point away from us, it assumes
        vertexes are labeled in the correct order (so cross product gets the right direction)
        or that correct normals are provided for objects */
-    glEnable(GL_CULL_FACE);
+    //glEnable(GL_CULL_FACE);
 
     /* enable vsync for smooth pictures */
     glfwSwapInterval(1);
@@ -141,9 +141,9 @@ void System::Frame()
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
 
-    for (auto listener : frameListenersM)
+    for (uint32 i = 0; i < frameListenersM.size(); ++i)
     {
-        listener->OnFrame();
+        frameListenersM[i]->OnFrame();
     }
 
     glfwSwapBuffers(pWindowM);

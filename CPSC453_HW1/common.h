@@ -14,8 +14,6 @@
 #include "include/glm/gtx/transform.hpp"
 #include "include/glm/gtc/matrix_transform.hpp"
 
-#include "include/SOIL.h"
-
 #define PI 3.14159265358979323846f
 #define PI_D 3.14159265358979323846
 

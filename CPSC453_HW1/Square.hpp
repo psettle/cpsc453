@@ -1,9 +1,9 @@
-#ifndef SQUAREDIAMONDAPP_H
-#define SQUAREDIAMONDAPP_H
+#ifndef SQUARE_H
+#define SQUARE_H
 
 /**
-file: SquareDiamondApp.hpp
-brief: An app that shows overlayed squares and diamonds
+file: Square.hpp
+brief: Definition of OpenGL square.
 notes:
 */
 
@@ -11,9 +11,7 @@ notes:
                         INCLUDES
 **********************************************************/
 
-#include "IApp.hpp"
-#include "IFrameDispatcher.hpp"
-#include "Square.hpp"
+#include "Polygon.hpp"
 
 /**********************************************************
                         CONSTANTS
@@ -23,30 +21,16 @@ notes:
                        DECLARATIONS
 **********************************************************/
 
-class SquareDiamondApp : public IApp
+class Square : public Polygon
 {
 public:
-    SquareDiamondApp(IFrameDispatcher* dispatcher);
-
-    ~SquareDiamondApp();
-
-    virtual void OnFrame();
-
-    virtual void SetNumber(uint32 number);
-
-    void CreateShapes();
-
-    void DestroyShapes();
+    Square(IFrameDispatcher* dispatcher, GLdouble sideLen, GLdouble angleRad, glm::vec3 const & color, GLfloat depth);
 
 protected:
-
-    uint8                   currentShapeCountM = 1;
-    IFrameDispatcher*       pFrameDispatcherM = nullptr;
-    std::vector<Polygon*>   activeShapesM;
 };
 
 /**********************************************************
                        DEFINITIONS
 **********************************************************/
 
-#endif /* SQUAREDIAMONDAPP_H */
+#endif /* SQUARE_H */
