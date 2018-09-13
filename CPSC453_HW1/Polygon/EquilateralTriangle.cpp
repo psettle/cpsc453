@@ -29,14 +29,14 @@ EquilateralTriangle::EquilateralTriangle(IFrameDispatcher* dispatcher, GLdouble 
     std::vector<glm::vec3> vertices;
     std::vector<glm::vec3> colors;
 
-    glm::vec4 top = glm::vec4(0.0f, sideLen / ROOT_3, 0.0f, 0.0f);
-    glm::vec4 left = glm::vec4(-sideLen / 2.0f, -sideLen / (ROOT_3 * 2.0f), 0.0f, 0.0f);
-    glm::vec4 right = glm::vec4(sideLen / 2.0f, -sideLen / (ROOT_3 * 2.0f), 0.0f, 0.0f);
+    glm::vec3 top = glm::vec3(0.0f, sideLen / ROOT_3, 0.0f);
+    glm::vec3 left = glm::vec3(-sideLen / 2.0f, -sideLen / (ROOT_3 * 2.0f), 0.0f);
+    glm::vec3 right = glm::vec3(sideLen / 2.0f, -sideLen / (ROOT_3 * 2.0f), 0.0f);
 
     /* Push vertices onto array to create triangle. */
-    vertices.push_back(glm::vec3(top));
-    vertices.push_back(glm::vec3(left));
-    vertices.push_back(glm::vec3(right));
+    vertices.push_back(top);
+    vertices.push_back(left);
+    vertices.push_back(right);
 
     /* Populate colours */
     for (uint32 i = 0; i < vertices.size(); ++i)

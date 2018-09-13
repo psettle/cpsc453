@@ -122,6 +122,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Apps\SierpinskiApp.hpp" />
+    <ClInclude Include="Apps\SierpinskiDotsApp.hpp" />
     <ClInclude Include="Apps\SpiralApp.hpp" />
     <ClInclude Include="Apps\SquareDiamondApp.hpp" />
     <ClInclude Include="Core\AppManager.hpp" />
@@ -402,6 +403,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Apps\SierpinskiApp.cpp" />
+    <ClCompile Include="Apps\SierpinskiDotsApp.cpp" />
     <ClCompile Include="Apps\SpiralApp.cpp" />
     <ClCompile Include="Apps\SquareDiamondApp.cpp" />
     <ClCompile Include="Core\AppManager.cpp" />

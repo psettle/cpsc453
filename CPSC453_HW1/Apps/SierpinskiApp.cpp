@@ -100,7 +100,7 @@ void SierpinskiApp::CreateShapes()
     for (auto& location : triangleLocations)
     {
         /* Color scales with screen position, but offset to allow negative locations to have color. */
-        glm::vec3 color = location + glm::vec3(0.5, 0.5, 0.5);
+        glm::vec3 color = location + glm::vec3(0.5f);
         activeShapesM.push_back(new EquilateralTriangle(pFrameDispatcherM, triangleLen, color, location));
     }
 }

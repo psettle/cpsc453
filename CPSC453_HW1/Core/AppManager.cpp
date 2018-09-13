@@ -14,6 +14,7 @@ notes:
 #include "SquareDiamondApp.hpp"
 #include "SpiralApp.hpp"
 #include "SierpinskiApp.hpp"
+#include "SierpinskiDotsApp.hpp"
 
 /**********************************************************
                         CONSTANTS
@@ -137,8 +138,10 @@ void AppManager::IncrementActiveApp()
         activeAppEnumM = ACTIVE_APP_SIERPINSKI;
         break;
     case ACTIVE_APP_SIERPINSKI:
-        activeAppEnumM = ACTIVE_APP_NESTED_SQUARES;
+        activeAppEnumM = ACTIVE_APP_SIERPINSKIDOTS;
         break;
+    case ACTIVE_APP_SIERPINSKIDOTS:
+        activeAppEnumM = ACTIVE_APP_NESTED_SQUARES;
     default:
         break;
     }
@@ -150,7 +153,7 @@ void AppManager::DecrementActiveApp()
     switch (activeAppEnumM)
     {
     case ACTIVE_APP_NESTED_SQUARES:
-        activeAppEnumM = ACTIVE_APP_SIERPINSKI;
+        activeAppEnumM = ACTIVE_APP_SIERPINSKIDOTS;
         break;
     case ACTIVE_APP_SPIRAL:
         activeAppEnumM = ACTIVE_APP_NESTED_SQUARES;
@@ -158,6 +161,8 @@ void AppManager::DecrementActiveApp()
     case ACTIVE_APP_SIERPINSKI:
         activeAppEnumM = ACTIVE_APP_SPIRAL;
         break;
+    case ACTIVE_APP_SIERPINSKIDOTS:
+        activeAppEnumM = ACTIVE_APP_SIERPINSKI;
     default:
         break;
     }
@@ -180,11 +185,12 @@ void AppManager::SetCurrentApp()
     case ACTIVE_APP_SIERPINSKI:
         pActiveAppM = new SierpinskiApp(pFrameDispatcherM);
         break;
+    case ACTIVE_APP_SIERPINSKIDOTS:
+        pActiveAppM = new SierpinskiDotsApp(pFrameDispatcherM);
+        break;
     default:
         break;
     }
-
-    pActiveAppM->SetNumber(1);
 }
 
 AppManager::~AppManager()
