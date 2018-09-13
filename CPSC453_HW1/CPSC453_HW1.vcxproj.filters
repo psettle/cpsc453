@@ -510,6 +510,12 @@
     <ClInclude Include="Core\IApp.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Apps\SierpinskiApp.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Polygon\EquilateralTriangle.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="include\glm\detail\func_common.inl">
@@ -869,6 +875,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Polygon\Square.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Apps\SierpinskiApp.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Polygon\EquilateralTriangle.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

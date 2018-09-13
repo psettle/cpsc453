@@ -61,7 +61,6 @@ void SquareDiamondApp::SetNumber(uint32 number)
 
 void SquareDiamondApp::CreateShapes()
 {
-    GLfloat depth = 0.0f;
     GLdouble side_len = 1.9f;
     glm::vec3 red = glm::vec3(1.0f, 0.0f, 0.0f);
     glm::vec3 blue = glm::vec3(0.0f, 0.0f, 1.0f);
@@ -70,14 +69,12 @@ void SquareDiamondApp::CreateShapes()
 
     for (uint16 i = 0; i < currentShapeCountM; ++i)
     {
-        activeShapesM.push_back(new Square(pFrameDispatcherM, side_len, 0, red, depth));
+        activeShapesM.push_back(new Square(pFrameDispatcherM, side_len, 0, red));
         red.x -= shade_difference;
-        depth += SQUARE_DEPTH_OFFSET;
         side_len *= SIDE_LEN_FACTOR;
 
-        activeShapesM.push_back(new Square(pFrameDispatcherM, side_len, PI_D / 4, blue, depth));
+        activeShapesM.push_back(new Square(pFrameDispatcherM, side_len, PI_D / 4, blue));
         blue.z -= shade_difference;
-        depth += SQUARE_DEPTH_OFFSET;
         side_len *= SIDE_LEN_FACTOR;
     }
 }

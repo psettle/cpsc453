@@ -22,7 +22,7 @@ notes:
                        DEFINITIONS
 **********************************************************/
 
-Square::Square(IFrameDispatcher* dispatcher, GLdouble sideLen, GLdouble angleRad, glm::vec3 const & color, GLfloat depth)
+Square::Square(IFrameDispatcher* dispatcher, GLdouble sideLen, GLdouble angleRad, glm::vec3 const & color)
 {
     std::vector<glm::vec3> vertices;
     std::vector<glm::vec3> colors;
@@ -59,5 +59,5 @@ Square::Square(IFrameDispatcher* dispatcher, GLdouble sideLen, GLdouble angleRad
         colors.push_back(color);
     }
 
-    Configure(dispatcher, vertices, colors, glm::vec3(0.0f, 0.0f, depth), GL_LINES);
+    Configure(dispatcher, vertices, colors, glm::vec3(0.0f), GL_LINES);
 }

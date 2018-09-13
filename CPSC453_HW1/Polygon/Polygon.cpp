@@ -118,4 +118,4 @@ Polygon::~Polygon()
     glDeleteVertexArrays(1, &vertexArrayHandleM);
 }
 
-PolygonShader* Polygon::shader = nullptr;
+Shader* Polygon::shader = nullptr;

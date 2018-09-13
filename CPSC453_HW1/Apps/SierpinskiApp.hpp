@@ -1,9 +1,9 @@
-#ifndef SQUARE_H
-#define SQUARE_H
+#ifndef SIERPINSKIAPP_H
+#define SIERPINSKIAPP_H
 
 /**
-file: Square.hpp
-brief: Definition of OpenGL square.
+file: SierpinskiApp.hpp
+brief: An app that shows a Sierpinski triangle at various iterations.
 notes:
 */
 
@@ -11,6 +11,8 @@ notes:
                         INCLUDES
 **********************************************************/
 
+#include "IApp.hpp"
+#include "IFrameDispatcher.hpp"
 #include "Polygon.hpp"
 
 /**********************************************************
@@ -21,16 +23,30 @@ notes:
                        DECLARATIONS
 **********************************************************/
 
-class Square : public Polygon
+class SierpinskiApp : public IApp
 {
 public:
-    Square(IFrameDispatcher* dispatcher, GLdouble sideLen, GLdouble angleRad, glm::vec3 const & color);
+    SierpinskiApp(IFrameDispatcher* dispatcher);
+
+    ~SierpinskiApp();
+
+    virtual void OnFrame();
+
+    virtual void SetNumber(uint32 number);
+
+    void CreateShapes();
+
+    void DestroyShapes();
 
 protected:
+
+    uint8                   currentIterationsM = 1;
+    IFrameDispatcher*       pFrameDispatcherM = nullptr;
+    std::vector<Polygon*>   activeShapesM;
 };
 
 /**********************************************************
                        DEFINITIONS
 **********************************************************/
 
-#endif /* SQUARE_H */
+#endif /* SIERPINSKIAPP_H */

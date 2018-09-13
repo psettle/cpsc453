@@ -51,7 +51,7 @@ private:
     IFrameDispatcher* pFrameDispatcherM = nullptr;
 
 
-    static PolygonShader* shader;
+    static Shader* shader;
 };
 
 /**********************************************************

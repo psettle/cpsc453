@@ -13,6 +13,7 @@ notes:
 #include "AppManager.hpp"
 #include "SquareDiamondApp.hpp"
 #include "SpiralApp.hpp"
+#include "SierpinskiApp.hpp"
 
 /**********************************************************
                         CONSTANTS
@@ -79,6 +80,11 @@ void AppManager::ProcessNumberInput()
                     pActiveAppM->SetNumber(number);
                     std::cout << number << std::endl;
                 }
+                else if (pressedKeyBufferM == "0")
+                {
+                    pActiveAppM->SetNumber(0);
+                    std::cout << 0 << std::endl;
+                }
 
                 pressedKeyBufferM = "";
             }
@@ -128,6 +134,9 @@ void AppManager::IncrementActiveApp()
         activeAppEnumM = ACTIVE_APP_SPIRAL;
         break;
     case ACTIVE_APP_SPIRAL:
+        activeAppEnumM = ACTIVE_APP_SIERPINSKI;
+        break;
+    case ACTIVE_APP_SIERPINSKI:
         activeAppEnumM = ACTIVE_APP_NESTED_SQUARES;
         break;
     default:
@@ -141,10 +150,13 @@ void AppManager::DecrementActiveApp()
     switch (activeAppEnumM)
     {
     case ACTIVE_APP_NESTED_SQUARES:
-        activeAppEnumM = ACTIVE_APP_SPIRAL;
+        activeAppEnumM = ACTIVE_APP_SIERPINSKI;
         break;
     case ACTIVE_APP_SPIRAL:
         activeAppEnumM = ACTIVE_APP_NESTED_SQUARES;
+        break;
+    case ACTIVE_APP_SIERPINSKI:
+        activeAppEnumM = ACTIVE_APP_SPIRAL;
         break;
     default:
         break;
@@ -164,6 +176,9 @@ void AppManager::SetCurrentApp()
         break;
     case ACTIVE_APP_SPIRAL:
         pActiveAppM = new SpiralApp(pFrameDispatcherM);
+        break;
+    case ACTIVE_APP_SIERPINSKI:
+        pActiveAppM = new SierpinskiApp(pFrameDispatcherM);
         break;
     default:
         break;

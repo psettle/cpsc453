@@ -1,5 +1,5 @@
-#ifndef SQUARE_H
-#define SQUARE_H
+#ifndef EQUILATERALTRIANGLE_H
+#define EQUILATERALTRIANGLE_H
 
 /**
 file: Square.hpp
@@ -21,10 +21,10 @@ notes:
                        DECLARATIONS
 **********************************************************/
 
-class Square : public Polygon
+class EquilateralTriangle : public Polygon
 {
 public:
-    Square(IFrameDispatcher* dispatcher, GLdouble sideLen, GLdouble angleRad, glm::vec3 const & color);
+    EquilateralTriangle(IFrameDispatcher* dispatcher, GLdouble sideLen, glm::vec3 const & color, glm::vec3 const & position);
 
 protected:
 };
@@ -33,4 +33,4 @@ protected:
                        DEFINITIONS
 **********************************************************/
 
-#endif /* SQUARE_H */
+#endif /* EQUILATERALTRIANGLE_H */

@@ -71,7 +71,7 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LibraryPath>C:\builds\CPSC453\CPSC453_HW1\lib;$(LibraryPath)</LibraryPath>
-    <IncludePath>C:\builds\cpsc453\CPSC453_HW1\include;C:\builds\cpsc453\CPSC453_HW1\Polygon;C:\builds\cpsc453\CPSC453_HW1\Core;C:\builds\cpsc453\CPSC453_HW1\Apps;$(IncludePath)</IncludePath>
+    <IncludePath>C:\builds\cpsc453\CPSC453_HW1\Polygon;C:\builds\cpsc453\CPSC453_HW1\Core;C:\builds\cpsc453\CPSC453_HW1\Apps;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -121,6 +121,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Apps\SierpinskiApp.hpp" />
     <ClInclude Include="Apps\SpiralApp.hpp" />
     <ClInclude Include="Apps\SquareDiamondApp.hpp" />
     <ClInclude Include="Core\AppManager.hpp" />
@@ -281,6 +282,7 @@
     <ClInclude Include="include\GL\wglew.h" />
     <ClInclude Include="include\SOIL.h" />
     <ClInclude Include="Polygon\Circle.hpp" />
+    <ClInclude Include="Polygon\EquilateralTriangle.hpp" />
     <ClInclude Include="Polygon\Polygon.hpp" />
     <ClInclude Include="Polygon\PolygonShader.hpp" />
     <ClInclude Include="Polygon\Spiral.hpp" />
@@ -399,6 +401,7 @@
     <None Include="include\glm\gtx\wrap.inl" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Apps\SierpinskiApp.cpp" />
     <ClCompile Include="Apps\SpiralApp.cpp" />
     <ClCompile Include="Apps\SquareDiamondApp.cpp" />
     <ClCompile Include="Core\AppManager.cpp" />
@@ -406,6 +409,7 @@
     <ClCompile Include="Core\Shader.cpp" />
     <ClCompile Include="Core\System.cpp" />
     <ClCompile Include="Polygon\Circle.cpp" />
+    <ClCompile Include="Polygon\EquilateralTriangle.cpp" />
     <ClCompile Include="Polygon\Polygon.cpp" />
     <ClCompile Include="Polygon\Spiral.cpp" />
     <ClCompile Include="Polygon\Square.cpp" />
