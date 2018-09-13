@@ -11,7 +11,7 @@ notes:
 #include<string>
 #include<fstream>
 
-#include "Shader.h"
+#include "Shader.hpp"
 
 /**********************************************************
                         CONSTANTS

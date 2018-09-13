@@ -22,7 +22,7 @@ notes:
                        DEFINITIONS
 **********************************************************/
 
-Circle::Circle(IFrameDispatcher* dispatcher, GLdouble radius, GLuint segmentCount, glm::vec3 const & color, GLfloat depth)
+Circle::Circle(IFrameDispatcher* dispatcher, GLfloat radius, GLuint segmentCount, glm::vec3 const & color, GLfloat depth)
 {
     std::vector<glm::vec3> vertices;
     std::vector<glm::vec3> colors;
@@ -32,12 +32,12 @@ Circle::Circle(IFrameDispatcher* dispatcher, GLdouble radius, GLuint segmentCoun
         glm::vec3 lineStart;
         glm::vec3 lineEnd;
 
-        lineStart.x = radius * glm::cos(2 * PI_D * i / segmentCount);
-        lineStart.y = radius * glm::sin(2 * PI_D * i / segmentCount);
+        lineStart.x = radius * glm::cos(2 * PI * i / segmentCount);
+        lineStart.y = radius * glm::sin(2 * PI * i / segmentCount);
         lineStart.z = 0.0f;
 
-        lineEnd.x = radius * glm::cos(2 * PI_D * ( i + 1 ) / segmentCount);
-        lineEnd.y = radius * glm::sin(2 * PI_D * ( i + 1 ) / segmentCount);
+        lineEnd.x = radius * glm::cos(2 * PI * ( i + 1 ) / segmentCount);
+        lineEnd.y = radius * glm::sin(2 * PI * ( i + 1 ) / segmentCount);
         lineEnd.z = 0.0f;
 
         vertices.push_back(lineStart);

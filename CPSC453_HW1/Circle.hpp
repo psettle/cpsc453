@@ -25,7 +25,7 @@ notes:
 class Circle : public Polygon
 {
 public:
-    Circle(IFrameDispatcher* dispatcher, GLdouble radius, GLuint segmentCount, glm::vec3 const & color, GLfloat depth);
+    Circle(IFrameDispatcher* dispatcher, GLfloat radius, GLuint segmentCount, glm::vec3 const & color, GLfloat depth);
 
 protected:
 };

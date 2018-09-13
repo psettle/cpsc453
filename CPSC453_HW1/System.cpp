@@ -39,7 +39,7 @@ System::System()
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE); /* Disable deprecated features */
 
     /* Create a window */
-    pWindowM = glfwCreateWindow(WINDOW_WIDTH / 1.3, WINDOW_HEIGHT / 1.3, WINDOW_NAME.c_str(), NULL, NULL);
+    pWindowM = glfwCreateWindow(WINDOW_WIDTH, WINDOW_HEIGHT, WINDOW_NAME.c_str(), NULL, NULL);
 
     /* if the window creation failed, return */
     if (pWindowM == NULL)
