@@ -13,10 +13,9 @@ notes:
 /**********************************************************
                         CONSTANTS
 **********************************************************/
-static const uint16 WINDOW_WIDTH = 1080;
-static const uint16 WINDOW_HEIGHT = 1080;
+static const uint16 WINDOW_WIDTH = 1000;
+static const uint16 WINDOW_HEIGHT = 1000;
 static const std::string WINDOW_NAME = "CPSC453_HW1";
-#define FULLSCREEN_ENABLE false
 
 /**********************************************************
                        DECLARATIONS
@@ -34,17 +33,13 @@ System::System()
         return;
     }
 
-    glfwWindowHint(GLFW_SAMPLES, 16); /* 4x antialiasing */
+    /* glfwWindowHint(GLFW_SAMPLES, 16); *//* 4x antialiasing */
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3); /* Using OpenGL 3.3 */
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE); /* Disable deprecated features */
 
     /* Create a window */
-#if FULLSCREEN_ENABLE
-    pWindowM = glfwCreateWindow(WINDOW_WIDTH, WINDOW_HEIGHT, WINDOW_NAME.c_str(), glfwGetPrimaryMonitor(), NULL);
-#else
     pWindowM = glfwCreateWindow(WINDOW_WIDTH / 1.3, WINDOW_HEIGHT / 1.3, WINDOW_NAME.c_str(), NULL, NULL);
-#endif
 
     /* if the window creation failed, return */
     if (pWindowM == NULL)
@@ -61,15 +56,6 @@ System::System()
     {
         return;
     }
-
-    /* this keeps faces nearer to the camera on top */
-    //glEnable(GL_DEPTH_TEST);
-    //glDepthFunc(GL_LESS);
-
-    /* this tells openGL not to bother rendering faces that point away from us, it assumes
-       vertexes are labeled in the correct order (so cross product gets the right direction)
-       or that correct normals are provided for objects */
-    //glEnable(GL_CULL_FACE);
 
     /* enable vsync for smooth pictures */
     glfwSwapInterval(1);
@@ -139,7 +125,7 @@ void System::Frame()
 {
     glfwPollEvents();
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
+    glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
 
     for (uint32 i = 0; i < frameListenersM.size(); ++i)
     {

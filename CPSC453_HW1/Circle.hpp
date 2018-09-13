@@ -1,18 +1,17 @@
-#ifndef SQUAREDIAMONDAPP_H
-#define SQUAREDIAMONDAPP_H
+#ifndef CIRCLE_H
+#define CIRCLE_H
 
 /**
-file: SquareDiamondApp.hpp
-brief: An app that shows overlayed squares and diamonds
+file: Circle.hpp
+brief: Definition of OpenGL Circle.
 notes:
+    Not technically a part of any apps, mostly proof of concept for curves.
 */
 
 /**********************************************************
                         INCLUDES
 **********************************************************/
 
-#include "IApp.hpp"
-#include "IFrameDispatcher.hpp"
 #include "Polygon.hpp"
 
 /**********************************************************
@@ -23,30 +22,16 @@ notes:
                        DECLARATIONS
 **********************************************************/
 
-class SquareDiamondApp : public IApp
+class Circle : public Polygon
 {
 public:
-    SquareDiamondApp(IFrameDispatcher* dispatcher);
-
-    ~SquareDiamondApp();
-
-    virtual void OnFrame();
-
-    virtual void SetNumber(uint32 number);
-
-    void CreateShapes();
-
-    void DestroyShapes();
+    Circle(IFrameDispatcher* dispatcher, GLdouble radius, GLuint segmentCount, glm::vec3 const & color, GLfloat depth);
 
 protected:
-
-    uint8                   currentShapeCountM = 1;
-    IFrameDispatcher*       pFrameDispatcherM = nullptr;
-    std::vector<Polygon*>   activeShapesM;
 };
 
 /**********************************************************
                        DEFINITIONS
 **********************************************************/
 
-#endif /* SQUAREDIAMONDAPP_H */
+#endif /* CIRCLE_H */

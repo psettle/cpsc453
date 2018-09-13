@@ -9,6 +9,7 @@ notes:
 **********************************************************/
 
 #include "SquareDiamondApp.hpp"
+#include "Square.hpp"
 
 /**********************************************************
                         CONSTANTS
@@ -36,7 +37,6 @@ SquareDiamondApp::SquareDiamondApp(IFrameDispatcher* dispatcher)
 SquareDiamondApp::~SquareDiamondApp()
 {
     DestroyShapes();
-    std::cout << "app stopped" << std::endl;
 }
 
 void SquareDiamondApp::OnFrame()
@@ -50,7 +50,10 @@ void SquareDiamondApp::SetNumber(uint32 number)
     if (number > 0 && number <= MAX_SHAPE_COUNT)
     {
         currentShapeCountM = number;
-        /* Destroy and recreate shapes to change what is displayed */
+        /* Destroy and recreate shapes to change what is displayed,
+           note:
+                Could optimize by just hidding shapes that should not be displayed, that isn't done here.
+                */
         DestroyShapes();
         CreateShapes();
     }
@@ -59,7 +62,7 @@ void SquareDiamondApp::SetNumber(uint32 number)
 void SquareDiamondApp::CreateShapes()
 {
     GLfloat depth = 0.0f;
-    GLdouble side_len = 2.0f;
+    GLdouble side_len = 1.9f;
     glm::vec3 red = glm::vec3(1.0f, 0.0f, 0.0f);
     glm::vec3 blue = glm::vec3(0.0f, 0.0f, 1.0f);
 
@@ -67,24 +70,26 @@ void SquareDiamondApp::CreateShapes()
 
     for (uint16 i = 0; i < currentShapeCountM; ++i)
     {
-        side_len *= SIDE_LEN_FACTOR;
         activeShapesM.push_back(new Square(pFrameDispatcherM, side_len, 0, red, depth));
         red.x -= shade_difference;
         depth += SQUARE_DEPTH_OFFSET;
-
         side_len *= SIDE_LEN_FACTOR;
+
         activeShapesM.push_back(new Square(pFrameDispatcherM, side_len, PI_D / 4, blue, depth));
         blue.z -= shade_difference;
         depth += SQUARE_DEPTH_OFFSET;
+        side_len *= SIDE_LEN_FACTOR;
     }
 }
 
 void SquareDiamondApp::DestroyShapes()
 {
+    /* Delete all the polygons */
     for (auto shape : activeShapesM)
     {
         delete shape;
     }
 
+    /* Empty the array now that that's done. */
     activeShapesM.clear();
 }

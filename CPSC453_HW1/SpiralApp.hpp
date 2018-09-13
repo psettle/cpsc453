@@ -1,8 +1,8 @@
-#ifndef SQUAREDIAMONDAPP_H
-#define SQUAREDIAMONDAPP_H
+#ifndef SPIRALAPP_H
+#define SPIRALAPP_H
 
 /**
-file: SquareDiamondApp.hpp
+file: SpiralApp.hpp
 brief: An app that shows overlayed squares and diamonds
 notes:
 */
@@ -23,24 +23,24 @@ notes:
                        DECLARATIONS
 **********************************************************/
 
-class SquareDiamondApp : public IApp
+class SpiralApp : public IApp
 {
 public:
-    SquareDiamondApp(IFrameDispatcher* dispatcher);
+    SpiralApp(IFrameDispatcher* dispatcher);
 
-    ~SquareDiamondApp();
+    ~SpiralApp();
 
     virtual void OnFrame();
 
     virtual void SetNumber(uint32 number);
 
-    void CreateShapes();
+    void CreateSpiral();
 
-    void DestroyShapes();
+    void DestroySpiral();
 
 protected:
 
-    uint8                   currentShapeCountM = 1;
+    uint8                   currentSpiralRevolutionsM = 1;
     IFrameDispatcher*       pFrameDispatcherM = nullptr;
     std::vector<Polygon*>   activeShapesM;
 };
@@ -49,4 +49,4 @@ protected:
                        DEFINITIONS
 **********************************************************/
 
-#endif /* SQUAREDIAMONDAPP_H */
+#endif /* SPIRALAPP_H */

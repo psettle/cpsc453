@@ -22,7 +22,14 @@ notes:
                        DEFINITIONS
 **********************************************************/
 
-void Polygon::Configure(IFrameDispatcher* dispatcher, std::vector<glm::vec3> const & vertices, glm::vec3 const & color, glm::vec3 const & postition)
+void Polygon::Configure
+    (
+    IFrameDispatcher* dispatcher,
+    std::vector<glm::vec3> const & vertices,
+    std::vector<glm::vec3> const & colors,
+    glm::vec3 const & postition,
+    GLuint glDrawMode
+    )
 {
     GLuint vertex_buffer_object;
     GLuint color_buffer_object;
@@ -58,17 +65,9 @@ void Polygon::Configure(IFrameDispatcher* dispatcher, std::vector<glm::vec3> con
 
     vertexCountM = vertices.size() * 3;
 
-    /* Create a color buffer: */
-    std::vector<glm::vec3> color_array;
-
-    for (auto vertex : vertices)
-    {
-        color_array.push_back(color);
-    }
-
     /* Bind color buffer */
     glBindBuffer(GL_ARRAY_BUFFER, color_buffer_object);
-    glBufferData(GL_ARRAY_BUFFER, color_array.size() * sizeof(glm::vec3), &color_array[0], GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, colors.size() * sizeof(glm::vec3), &colors[0], GL_STATIC_DRAW);
     glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
     glEnableVertexAttribArray(1);
 
@@ -80,8 +79,11 @@ void Polygon::Configure(IFrameDispatcher* dispatcher, std::vector<glm::vec3> con
     /* Create shader for the class, if it doesn't exist */
     if (nullptr == Polygon::shader)
     {
+        /* TODO: this is never deleted, could be deleted on system deinit, or when no polygons exist. */
         Polygon::shader = new PolygonShader();
     }
+
+    glDrawModeM = glDrawMode;
 
     /* Mark object as configured. */
     isConfiguredM = true;
@@ -101,8 +103,8 @@ void Polygon::OnFrame()
    
     /* set the vertex array object active */
     glBindVertexArray(vertexArrayHandleM);
-    /* draw the triangles */
-    glDrawArrays(GL_TRIANGLES, 0, vertexCountM);
+    /* draw the elements */
+    glDrawArrays(glDrawModeM, 0, vertexCountM);
     /* clear the array object */
     glBindVertexArray(0);
 

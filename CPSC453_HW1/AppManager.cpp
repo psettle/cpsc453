@@ -12,6 +12,7 @@ notes:
 
 #include "AppManager.hpp"
 #include "SquareDiamondApp.hpp"
+#include "SpiralApp.hpp"
 
 /**********************************************************
                         CONSTANTS
@@ -121,21 +122,53 @@ void AppManager::ProcessAppSelectionInput()
 
 void AppManager::IncrementActiveApp()
 {
-    //only 1 app for now
+    switch (activeAppEnumM)
+    {
+    case ACTIVE_APP_NESTED_SQUARES:
+        activeAppEnumM = ACTIVE_APP_SPIRAL;
+        break;
+    case ACTIVE_APP_SPIRAL:
+        activeAppEnumM = ACTIVE_APP_NESTED_SQUARES;
+        break;
+    default:
+        break;
+    }
+    
     SetCurrentApp();
-    std::cout << "increment" << std::endl;
 }
 void AppManager::DecrementActiveApp()
 {
-    //only 1 app for now
+    switch (activeAppEnumM)
+    {
+    case ACTIVE_APP_NESTED_SQUARES:
+        activeAppEnumM = ACTIVE_APP_SPIRAL;
+        break;
+    case ACTIVE_APP_SPIRAL:
+        activeAppEnumM = ACTIVE_APP_NESTED_SQUARES;
+        break;
+    default:
+        break;
+    }
+
     SetCurrentApp();
-    std::cout << "decrement" << std::endl;
 }
 
 void AppManager::SetCurrentApp()
 {
     delete pActiveAppM;
-    pActiveAppM = new SquareDiamondApp(pFrameDispatcherM);
+
+    switch (activeAppEnumM)
+    {
+    case ACTIVE_APP_NESTED_SQUARES:
+        pActiveAppM = new SquareDiamondApp(pFrameDispatcherM);
+        break;
+    case ACTIVE_APP_SPIRAL:
+        pActiveAppM = new SpiralApp(pFrameDispatcherM);
+        break;
+    default:
+        break;
+    }
+
     pActiveAppM->SetNumber(1);
 }
 

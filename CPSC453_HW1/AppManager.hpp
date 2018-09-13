@@ -34,9 +34,10 @@ notes:
 enum ActiveAppEnum
 {
     ACTIVE_APP_NESTED_SQUARES,
+    ACTIVE_APP_SPIRAL,
 
     ACTIVE_APP_COUNT,
-    ACTIVE_APP_DEFAULT = ACTIVE_APP_NESTED_SQUARES
+    ACTIVE_APP_DEFAULT = ACTIVE_APP_SPIRAL
 };
 
 enum NumberReaderStateEnum
@@ -54,20 +55,6 @@ public:
     AppManager(IFrameDispatcher* dispatcher, IInputPoller* poller);
 
     /**
-        All the parts of this assignment require an integer input
-        describing the complexity of the drawing. The method runs a number
-        input algorithm with the keyboard, and will return true when the user finishes entering
-        a new number.
-     */
-    void ProcessNumberInput();
-    void ProcessAppSelectionInput();
-
-    void IncrementActiveApp();
-    void DecrementActiveApp();
-
-    void SetCurrentApp();
-
-    /**
         Called on each frame if registed to a frame dispatcher
      */
     virtual void OnFrame();
@@ -77,6 +64,33 @@ public:
      */
     ~AppManager();
 protected:
+
+    /**
+        All the parts of this assignment require an integer input
+        describing the complexity of the drawing. The method runs a number
+        input algorithm with the keyboard, then passes the result to the current app.
+     */
+    void ProcessNumberInput();
+
+    /**
+        Detects up and down arrow key release events, and then calls increment or decrement app.
+     */
+    void ProcessAppSelectionInput();
+
+    /**
+        Increment activeAppEnumM to the next valid app, rolling over as required.
+     */
+    void IncrementActiveApp();
+
+    /**
+        Decrement activeAppEnumM to the previous valid app, rolling under as required.
+    */
+    void DecrementActiveApp();
+
+    /**
+        Shutdown the current running app, then start a new app based on activeAppEnumM.
+     */
+    void SetCurrentApp();
 
     IFrameDispatcher* pFrameDispatcherM = nullptr;
     IInputPoller*     pInputPollerM = nullptr;
