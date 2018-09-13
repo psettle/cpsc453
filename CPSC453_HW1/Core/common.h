@@ -6,13 +6,13 @@
 
 #ifndef GLEW_STATIC
 #define GLEW_STATIC
-#include "include/GL/glew.h"
-#include "include/GLFW/glfw3.h"
+#include "../include/GL/glew.h"
+#include "../include/GLFW/glfw3.h"
 #endif
 
-#include "include/glm/glm.hpp"
-#include "include/glm/gtx/transform.hpp"
-#include "include/glm/gtc/matrix_transform.hpp"
+#include "../include/glm/glm.hpp"
+#include "../include/glm/gtx/transform.hpp"
+#include "../include/glm/gtc/matrix_transform.hpp"
 
 #define PI 3.14159265358979323846f
 #define PI_D 3.14159265358979323846
