@@ -1,9 +1,7 @@
 /**
-file: BarnsleyFernApp.cpp
-brief: An app that shows a partial BarnsleyFern
+file: HilbertSpaceCurveApp.cpp
+brief: An app that shows a partial hilbert space filling curve
 notes:
-    Transform functions modified from:
-    https://en.wikipedia.org/wiki/Barnsley_fern#Computer_generation
 */
 
 /**********************************************************
