@@ -40,7 +40,7 @@ public:
 
 protected:
 
-    uint8                   currentShapeCountM = 1;
+    uint8                   currentShapeCountM;
     IFrameDispatcher*       pFrameDispatcherM = nullptr;
     std::vector<Polygon*>   activeShapesM;
 };

@@ -121,6 +121,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Apps\BarnsleyFernApp.hpp" />
+    <ClInclude Include="Apps\HilbertSpaceCurveApp.hpp" />
     <ClInclude Include="Apps\SierpinskiApp.hpp" />
     <ClInclude Include="Apps\SierpinskiDotsApp.hpp" />
     <ClInclude Include="Apps\SpiralApp.hpp" />
@@ -402,6 +404,8 @@
     <None Include="include\glm\gtx\wrap.inl" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Apps\BarnsleyFernApp.cpp" />
+    <ClCompile Include="Apps\HilbertSpaceCurveApp.cpp" />
     <ClCompile Include="Apps\SierpinskiApp.cpp" />
     <ClCompile Include="Apps\SierpinskiDotsApp.cpp" />
     <ClCompile Include="Apps\SpiralApp.cpp" />

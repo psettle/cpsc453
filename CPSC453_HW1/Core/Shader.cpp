@@ -1,7 +1,11 @@
 /**
-file: system.hpp
+file: system.cpp
 brief: declaration of top level system driver
 notes:
+    Largely Based off of:
+    https://github.com/psettle/CrappyChess/blob/master/Shader.cpp
+
+    (My own code from a hobby project)
 */
 
 /**********************************************************

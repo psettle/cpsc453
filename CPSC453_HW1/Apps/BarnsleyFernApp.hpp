@@ -1,9 +1,9 @@
-#ifndef SIERPINSKIDOTSAPP_H
-#define SIERPINSKIDOTSAPP_H
+#ifndef BARNSLEYFERNAPP_H
+#define BARNSLEYFERNAPP_H
 
 /**
-file: SierpinskiDotsApp.hpp
-brief: An app that makes a Sierpinski Triangle using iterative points.
+file: BarnsleyFernApp.hpp
+brief: An app that makes a Barnsley Fern using iterative points.
 notes:
 */
 
@@ -23,12 +23,12 @@ notes:
                        DECLARATIONS
 **********************************************************/
 
-class SierpinskiDotsApp : public IApp
+class BarnsleyFernApp : public IApp
 {
 public:
-    SierpinskiDotsApp(IFrameDispatcher* dispatcher);
+    BarnsleyFernApp(IFrameDispatcher* dispatcher);
 
-    ~SierpinskiDotsApp();
+    ~BarnsleyFernApp();
 
     virtual void OnFrame();
 
@@ -40,6 +40,12 @@ public:
 
 protected:
 
+    /* Barnsley tranforms */
+    glm::vec3 F1(glm::vec3 const & point);
+    glm::vec3 F2(glm::vec3 const & point);
+    glm::vec3 F3(glm::vec3 const & point);
+    glm::vec3 F4(glm::vec3 const & point);
+
     uint32                  currentPointsM;
     IFrameDispatcher*       pFrameDispatcherM = nullptr;
     std::vector<Polygon*>   activeShapesM;
@@ -49,4 +55,4 @@ protected:
                        DEFINITIONS
 **********************************************************/
 
-#endif /* SIERPINSKIDOTSAPP_H */
+#endif /* BARNSLEYFERNAPP_H */

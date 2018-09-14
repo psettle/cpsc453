@@ -15,6 +15,8 @@ notes:
 #include "SpiralApp.hpp"
 #include "SierpinskiApp.hpp"
 #include "SierpinskiDotsApp.hpp"
+#include "BarnsleyFernApp.hpp"
+#include "HilbertSpaceCurveApp.hpp"
 
 /**********************************************************
                         CONSTANTS
@@ -141,7 +143,14 @@ void AppManager::IncrementActiveApp()
         activeAppEnumM = ACTIVE_APP_SIERPINSKIDOTS;
         break;
     case ACTIVE_APP_SIERPINSKIDOTS:
+        activeAppEnumM = ACTIVE_APP_BARNSLEYFERN;
+        break;
+    case ACTIVE_APP_BARNSLEYFERN:
+        activeAppEnumM = ACTIVE_APP_HILBERTSPACECURVE;
+        break;
+    case ACTIVE_APP_HILBERTSPACECURVE:
         activeAppEnumM = ACTIVE_APP_NESTED_SQUARES;
+        break;
     default:
         break;
     }
@@ -153,7 +162,7 @@ void AppManager::DecrementActiveApp()
     switch (activeAppEnumM)
     {
     case ACTIVE_APP_NESTED_SQUARES:
-        activeAppEnumM = ACTIVE_APP_SIERPINSKIDOTS;
+        activeAppEnumM = ACTIVE_APP_HILBERTSPACECURVE;
         break;
     case ACTIVE_APP_SPIRAL:
         activeAppEnumM = ACTIVE_APP_NESTED_SQUARES;
@@ -163,6 +172,13 @@ void AppManager::DecrementActiveApp()
         break;
     case ACTIVE_APP_SIERPINSKIDOTS:
         activeAppEnumM = ACTIVE_APP_SIERPINSKI;
+        break;
+    case ACTIVE_APP_BARNSLEYFERN:
+        activeAppEnumM = ACTIVE_APP_SIERPINSKIDOTS;
+        break;
+    case ACTIVE_APP_HILBERTSPACECURVE:
+        activeAppEnumM = ACTIVE_APP_BARNSLEYFERN;
+        break;
     default:
         break;
     }
@@ -188,6 +204,12 @@ void AppManager::SetCurrentApp()
     case ACTIVE_APP_SIERPINSKIDOTS:
         pActiveAppM = new SierpinskiDotsApp(pFrameDispatcherM);
         break;
+    case ACTIVE_APP_BARNSLEYFERN:
+        pActiveAppM = new BarnsleyFernApp(pFrameDispatcherM);
+        break;
+    case ACTIVE_APP_HILBERTSPACECURVE:
+        pActiveAppM = new HilbertSpaceCurveApp(pFrameDispatcherM);
+        break;
     default:
         break;
     }
@@ -195,5 +217,6 @@ void AppManager::SetCurrentApp()
 
 AppManager::~AppManager()
 {
+    delete pActiveAppM;
     pFrameDispatcherM->UnregisterFrameListener(this);
 }

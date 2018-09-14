@@ -1,9 +1,9 @@
-#ifndef SIERPINSKIDOTSAPP_H
-#define SIERPINSKIDOTSAPP_H
+#ifndef HILBERTSPACECURVEAPP_H
+#define HILBERTSPACECURVEAPP_H
 
 /**
-file: SierpinskiDotsApp.hpp
-brief: An app that makes a Sierpinski Triangle using iterative points.
+file: HilbertSpaceCurveApp.hpp
+brief: An app that makes a Barnsley Fern using iterative points.
 notes:
 */
 
@@ -23,12 +23,12 @@ notes:
                        DECLARATIONS
 **********************************************************/
 
-class SierpinskiDotsApp : public IApp
+class HilbertSpaceCurveApp : public IApp
 {
 public:
-    SierpinskiDotsApp(IFrameDispatcher* dispatcher);
+    HilbertSpaceCurveApp(IFrameDispatcher* dispatcher);
 
-    ~SierpinskiDotsApp();
+    ~HilbertSpaceCurveApp();
 
     virtual void OnFrame();
 
@@ -40,7 +40,7 @@ public:
 
 protected:
 
-    uint32                  currentPointsM;
+    uint32                  currentIterationsM;
     IFrameDispatcher*       pFrameDispatcherM = nullptr;
     std::vector<Polygon*>   activeShapesM;
 };
@@ -49,4 +49,4 @@ protected:
                        DEFINITIONS
 **********************************************************/
 
-#endif /* SIERPINSKIDOTSAPP_H */
+#endif /* HILBERTSPACECURVEAPP_H */

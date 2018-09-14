@@ -2,9 +2,13 @@
 #define SHADER_H
 
 /**
-file: system.hpp
+file: Shader.hpp
 brief: declaration of top level system driver
 notes:
+    Largely Based off of:
+    https://github.com/psettle/CrappyChess/blob/master/Shader.h
+
+    (My own code from a hobby project)
 */
 
 /**********************************************************

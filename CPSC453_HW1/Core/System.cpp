@@ -2,6 +2,10 @@
 file: System.cpp
 brief: definition of top level system driver
 notes:
+    Loosly based off of:
+    https://github.com/psettle/CrappyChess/blob/master/System.cpp
+
+    (My own code from a hobby project)
 */
 
 /**********************************************************

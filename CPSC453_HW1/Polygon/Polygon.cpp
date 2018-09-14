@@ -2,6 +2,10 @@
 file: Polygon.cpp
 brief: A collection of OpenGL Triangles with a color.
 notes:
+    Very loosly based off of:
+    https://github.com/psettle/CrappyChess/blob/master/GlObject.cpp
+
+    (My own hobby code)
 */
 
 /**********************************************************
