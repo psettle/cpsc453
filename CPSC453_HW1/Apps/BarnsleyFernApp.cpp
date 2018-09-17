@@ -92,7 +92,7 @@ void BarnsleyFernApp::CreateShapes()
         else
         {
             points.push_back(F4(points[i]));
-        }   
+        }
     }
 
     /* Apply global tranform to centre the fern */
@@ -103,7 +103,7 @@ void BarnsleyFernApp::CreateShapes()
     }
 
     /* Populate colors (green, it's a fern!) */
-    for (auto& point : points)
+    for (uint32 i = 0; i < points.size(); ++i)
     {
         colors.push_back(glm::vec3(0.1f, 0.8f, 0.1f));
     }
@@ -130,8 +130,8 @@ glm::vec3 BarnsleyFernApp::F1(glm::vec3 const & point)
 {
     return glm::vec3
             (
-                0.0f, 
-                0.16f * point.y, 
+                0.0f,
+                0.16f * point.y,
                 point.z
             );
 }
