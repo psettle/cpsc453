@@ -17,7 +17,7 @@ notes:
 **********************************************************/
 
 static const uint32 DEAFULT_ITERATION_COUNT = 1;
-static const uint32 MAX_ITERATION_COUNT = 10;
+static const uint32 MAX_ITERATION_COUNT = 11; /* Past this my computer runs out of memory? */
 
 /**********************************************************
                        DECLARATIONS
@@ -55,6 +55,10 @@ void HilbertSpaceCurveApp::SetNumber(uint32 number)
                 */
         DestroyShapes();
         CreateShapes();
+    }
+    else
+    {
+        std::cout << "Max iterations exceeded." << std::endl;
     }
 }
 

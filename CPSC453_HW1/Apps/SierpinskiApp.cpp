@@ -15,8 +15,8 @@ notes:
                         CONSTANTS
 **********************************************************/
 
-static const uint8 DEFAULT_ITERATION_COUNT = 1;
-static const uint8 MAX_ITERATION_COUNT = 8; /* Exponential growth, can't go very high before the program explodes. */
+static const uint8 DEFAULT_ITERATION_COUNT = 0;
+static const uint8 MAX_ITERATION_COUNT = 10; /* Exponential growth, can't go very high before the program explodes. */
 static const GLfloat ROOT_3 = sqrt(3.0f);
 
 /**********************************************************
@@ -55,6 +55,10 @@ void SierpinskiApp::SetNumber(uint32 number)
                 */
         DestroyShapes();
         CreateShapes();
+    }
+    else
+    {
+        std::cout << "Max iterations exceeded" << std::endl;
     }
 }
 

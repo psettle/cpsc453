@@ -16,7 +16,7 @@ notes:
 #include "IFrameDispatcher.hpp"
 #include "IFrameListener.hpp"
 #include "IInputPoller.hpp"
-#include "common.h"
+#include "Common.hpp"
 
 /**********************************************************
                         CONSTANTS

@@ -57,6 +57,10 @@ void SpiralApp::SetNumber(uint32 number)
         DestroySpiral();
         CreateSpiral();
     }
+    else
+    {
+        std::cout << "Max twists exceeded" << std::endl;
+    }
 }
 
 void SpiralApp::CreateSpiral()

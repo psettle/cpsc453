@@ -59,6 +59,10 @@ void BarnsleyFernApp::SetNumber(uint32 number)
         DestroyShapes();
         CreateShapes();
     }
+    else
+    {
+        std::cout << "Max dot count exceeded." << std::endl;
+    }
 }
 
 void BarnsleyFernApp::CreateShapes()

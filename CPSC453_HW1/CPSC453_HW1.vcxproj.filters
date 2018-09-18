@@ -462,9 +462,6 @@
     <ClInclude Include="include\SOIL.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="template.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Apps\SpiralApp.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -472,9 +469,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Core\AppManager.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Core\common.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Core\IFrameDispatcher.hpp">
@@ -523,6 +517,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Apps\HilbertSpaceCurveApp.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Common.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -901,5 +898,8 @@
     <ClCompile Include="Apps\HilbertSpaceCurveApp.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="intructions.txt" />
   </ItemGroup>
 </Project>

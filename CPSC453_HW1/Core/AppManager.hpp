@@ -13,7 +13,7 @@ notes:
                         INCLUDES
 **********************************************************/
 
-#include "common.h"
+#include "Common.hpp"
 #include "IFrameDispatcher.hpp"
 #include "IFrameListener.hpp"
 #include "IInputPoller.hpp"

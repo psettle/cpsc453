@@ -88,6 +88,10 @@ void AppManager::ProcessNumberInput()
                     pActiveAppM->SetNumber(0);
                     std::cout << 0 << std::endl;
                 }
+                else
+                {
+                    std::cout << "Invalid input, try again." << std::endl;
+                }
 
                 pressedKeyBufferM = "";
             }

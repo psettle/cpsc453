@@ -57,6 +57,10 @@ void SierpinskiDotsApp::SetNumber(uint32 number)
         DestroyShapes();
         CreateShapes();
     }
+    else
+    {
+        std::cout << "Max points exceeded" << std::endl;
+    }
 }
 
 void SierpinskiDotsApp::CreateShapes()

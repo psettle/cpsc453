@@ -57,6 +57,10 @@ void SquareDiamondApp::SetNumber(uint32 number)
         DestroyShapes();
         CreateShapes();
     }
+    else
+    {
+        std::cout << "Max iterations exceeded" << std::endl;
+    }
 }
 
 void SquareDiamondApp::CreateShapes()

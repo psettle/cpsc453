@@ -1,0 +1,31 @@
+======== Build Instructions ===========
+
+------ Windows --------
+Open ../CPSC453_HW1.sln with visualstudio 2017
+Select CPSC453_HW1 in the solution explorer
+Switch to Release mode
+Menu -> Build -> Clean
+Menu -> Build -> Build
+
+To run: ctrl + F5
+
+
+------ Linux ---------
+In this folder:
+make clean
+make all
+./out/cpsc453_hw1.exe
+
+(Tested on cpsc labs, other linux system may be missing libraries)
+
+========= Usage Instructions ===========
+
+Use "Up Arrow" and "Down Arrow" to cycle through the scenes/parts of the assignment
+
+All scenes accept user input in the form of an integer, whether that is #iterations, #points, #spiral, etc.
+	- Type the desired number for the scene, then press enter. (While having window focus on this application)
+	- The number you entered will be echo'd on the console window, along with an error message in the case of invalid input
+		- Possible invalid input is failing to enter any digits, or entering a number too big for the current scene.
+		- The input detection is pretty amateur, it will not register a key until it is released, and will not register a key if another number is already pressed, take it slow.
+
+To exit, click the close button, or Alt + F4 (Windows). I didn't hook up the esc key.
