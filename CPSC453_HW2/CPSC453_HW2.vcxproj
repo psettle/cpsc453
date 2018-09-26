@@ -20,8 +20,8 @@
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
-    <ProjectGuid>{F95C70CE-B4E6-4431-8F71-08B47DBB7FA1}</ProjectGuid>
-    <RootNamespace>CPSC453HW1</RootNamespace>
+    <ProjectGuid>{53C16483-DD46-4AFB-B698-5EDB4D6DB32E}</ProjectGuid>
+    <RootNamespace>CPSC453HW2</RootNamespace>
     <WindowsTargetPlatformVersion>10.0.17134.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -70,17 +70,32 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <IncludePath>$(ProjectDir)Apps;$(ProjectDir)Core;$(IncludePath)</IncludePath>
     <LibraryPath>$(ProjectDir)lib;$(LibraryPath)</LibraryPath>
-    <IncludePath>$(ProjectDir)Polygon;$(ProjectDir)Core;$(ProjectDir)Apps;$(IncludePath)</IncludePath>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <IncludePath>$(ProjectDir)Polygon;$(ProjectDir)Core;$(ProjectDir)Apps;$(IncludePath)</IncludePath>
-    <LibraryPath>$(ProjectDir)Lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>$(ProjectDir)Polygon;$(ProjectDir)Core;$(ProjectDir)Apps;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)Core;$(ProjectDir)Apps;$(IncludePath)</IncludePath>
     <LibraryPath>$(ProjectDir)lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <IncludePath>$(ProjectDir)Core;$(ProjectDir)Apps;$(IncludePath)</IncludePath>
+    <LibraryPath>$(ProjectDir)lib;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <ConformanceMode>true</ConformanceMode>
+    </ClCompile>
+    <Link>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalDependencies>glfw3.lib;opengl32.lib;glew32s.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
@@ -100,21 +115,6 @@
       <ConformanceMode>true</ConformanceMode>
     </ClCompile>
   </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <ClCompile>
-      <WarningLevel>Level3</WarningLevel>
-      <Optimization>MaxSpeed</Optimization>
-      <FunctionLevelLinking>true</FunctionLevelLinking>
-      <IntrinsicFunctions>true</IntrinsicFunctions>
-      <SDLCheck>true</SDLCheck>
-      <ConformanceMode>true</ConformanceMode>
-    </ClCompile>
-    <Link>
-      <EnableCOMDATFolding>true</EnableCOMDATFolding>
-      <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>glfw3.lib;opengl32.lib;glew32s.lib;%(AdditionalDependencies)</AdditionalDependencies>
-    </Link>
-  </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
@@ -131,20 +131,30 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="Apps\BarnsleyFernApp.hpp" />
-    <ClInclude Include="Apps\HilbertSpaceCurveApp.hpp" />
-    <ClInclude Include="Apps\SierpinskiApp.hpp" />
-    <ClInclude Include="Apps\SierpinskiDotsApp.hpp" />
-    <ClInclude Include="Apps\SpiralApp.hpp" />
-    <ClInclude Include="Apps\SquareDiamondApp.hpp" />
+    <ClCompile Include="Apps\ImagesApp.cpp" />
+    <ClCompile Include="Apps\Image.cpp" />
+    <ClCompile Include="Core\AppManager.cpp" />
+    <ClCompile Include="Core\main.cpp" />
+    <ClCompile Include="Core\Shader.cpp" />
+    <ClCompile Include="Core\StbImage.cpp" />
+    <ClCompile Include="Core\StbImplementation.cpp" />
+    <ClCompile Include="Core\System.cpp" />
+    <ClCompile Include="Core\Texture.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Apps\Image.hpp" />
+    <ClInclude Include="Apps\ImagesApp.hpp" />
     <ClInclude Include="Core\AppManager.hpp" />
     <ClInclude Include="Core\Common.hpp" />
     <ClInclude Include="Core\IApp.hpp" />
     <ClInclude Include="Core\IFrameDispatcher.hpp" />
     <ClInclude Include="Core\IFrameListener.hpp" />
-    <ClInclude Include="Core\IInputPoller.hpp" />
+    <ClInclude Include="Core\IInputDispatcher.hpp" />
+    <ClInclude Include="Core\IInputListener.hpp" />
     <ClInclude Include="Core\Shader.hpp" />
+    <ClInclude Include="Core\StbImage.hpp" />
     <ClInclude Include="Core\System.hpp" />
+    <ClInclude Include="Core\Texture.hpp" />
     <ClInclude Include="include\GLFW\glfw3.h" />
     <ClInclude Include="include\GLFW\glfw3native.h" />
     <ClInclude Include="include\glm\common.hpp" />
@@ -293,13 +303,6 @@
     <ClInclude Include="include\GL\glew.h" />
     <ClInclude Include="include\GL\glxew.h" />
     <ClInclude Include="include\GL\wglew.h" />
-    <ClInclude Include="include\SOIL.h" />
-    <ClInclude Include="Polygon\Circle.hpp" />
-    <ClInclude Include="Polygon\EquilateralTriangle.hpp" />
-    <ClInclude Include="Polygon\Polygon.hpp" />
-    <ClInclude Include="Polygon\PolygonShader.hpp" />
-    <ClInclude Include="Polygon\Spiral.hpp" />
-    <ClInclude Include="Polygon\Square.hpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="include\glm\detail\func_common.inl" />
@@ -413,24 +416,7 @@
     <None Include="include\glm\gtx\wrap.inl" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Apps\BarnsleyFernApp.cpp" />
-    <ClCompile Include="Apps\HilbertSpaceCurveApp.cpp" />
-    <ClCompile Include="Apps\SierpinskiApp.cpp" />
-    <ClCompile Include="Apps\SierpinskiDotsApp.cpp" />
-    <ClCompile Include="Apps\SpiralApp.cpp" />
-    <ClCompile Include="Apps\SquareDiamondApp.cpp" />
-    <ClCompile Include="Core\AppManager.cpp" />
-    <ClCompile Include="Core\main.cpp" />
-    <ClCompile Include="Core\Shader.cpp" />
-    <ClCompile Include="Core\System.cpp" />
-    <ClCompile Include="Polygon\Circle.cpp" />
-    <ClCompile Include="Polygon\EquilateralTriangle.cpp" />
-    <ClCompile Include="Polygon\Polygon.cpp" />
-    <ClCompile Include="Polygon\Spiral.cpp" />
-    <ClCompile Include="Polygon\Square.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="intructions.txt" />
+    <Image Include="..\..\..\Users\patri\Pictures\protoss.jpg" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
