@@ -130,6 +130,11 @@ void Image::Scale(GLfloat scaleFactor)
 {
     RawScale(scaleFactor);
     currentScaleM *= scaleFactor;
+
+    /* Also scale the position and translate to zoom on centre */
+    auto newPos = currentPos * scaleFactor;
+    auto translate = newPos - currentPos;
+    Translate(translate);
 }
 
 void Image::RawScale(GLfloat scaleFactor)
@@ -141,6 +146,11 @@ void Image::Rotate(GLfloat rotationAngle)
 {
     RawRotate(rotationAngle);
     currentRotationM += rotationAngle;
+
+    /* Apply polar rotation on origin so it appears to rotate on centre of screen */
+    auto newPos = glm::rotate(rotationAngle, glm::vec3(0.0f, 0.0f, 1.0f)) * glm::vec4(currentPos, 0.0f);
+
+    Translate((glm::vec3)newPos - currentPos);
 }
 
 void Image::RawRotate(GLfloat rotationAngle)
