@@ -42,8 +42,10 @@ public:
 protected:
 
     void SetImage(GLuint imageID);
+    void SetBackground(GLuint backgroundID);
 
-    Image* image = nullptr;
+    Image* pImageM = nullptr;
+    Image* pBackgroundImgM = nullptr;
 
     IFrameDispatcher*       pFrameDispatcherM = nullptr;
     IInputDispatcher*       pInputDispatcherM = nullptr;
@@ -53,6 +55,8 @@ protected:
 
     GLdouble oldMouseXM = 0.0f;
     GLdouble oldMouseYM = 0.0f;
+
+    GLint gaussianFilterScale = 0;
 };
 
 /**********************************************************

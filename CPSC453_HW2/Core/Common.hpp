@@ -26,3 +26,6 @@ typedef unsigned char uint8;
 typedef int sint32;
 typedef short sint16;
 typedef char sint8;
+
+#define WINDOW_WIDTH 1000
+#define WINDOW_HEIGHT 1000

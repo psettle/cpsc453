@@ -19,6 +19,10 @@ notes:
                         CONSTANTS
 **********************************************************/
 
+#define SIGMA 100.0f /* This is quite extreme, and it makes the filter stangley chuncky, but it allows you to still see changes up to several hundred pixels. */
+#define E     2.718281828459045235360287471352662497757247093699959574966967627724076630353f
+#define MAX_FILTER_SIZE 200 /* Max kernal size is 401x401, which covers essentially the whole image. */
+
 /**********************************************************
                        DECLARATIONS
 **********************************************************/
@@ -27,7 +31,29 @@ notes:
                        DEFINITIONS
 **********************************************************/
 
+enum ActiveShaderEnum
+{
+    ACTIVE_SHADER_PLAIN,
+    ACTIVE_SHADER_GREY_1,
+    ACTIVE_SHADER_GREY_2,
+    ACTIVE_SHADER_GREY_3,
+    ACTIVE_SHADER_SEPIA,
+    ACTIVE_SHADER_HALLOWEEN, /* Switched the R & G values, makes things look orange & green kinda. */
+    ACTIVE_SHADER_VERTICAL_SOBEL,
+    ACTIVE_SHADER_HORIZONTAL_SOBEL,
+    ACTIVE_SHADER_UNSHARP_MASK,
+    ACTIVE_SHADER_GAUSSIAN_3x3,
+    ACTIVE_SHADER_GAUSSIAN_5x5,
+    ACTIVE_SHADER_GAUSSIAN_7x7,
+    ACTIVE_SHADER_GAUSSIAN_NxN,
+
+    ACTIVE_SHADER_COUNT,
+    ACTIVE_SHADER_DEFAULT = ACTIVE_SHADER_PLAIN,
+    ACTIVE_SHADER_COUNT_RESOLUTION_REQUIRED_LINE = ACTIVE_SHADER_VERTICAL_SOBEL
+};
+
 Image::Image(std::string const & imagePath, IFrameDispatcher* dispatcher)
+    : activeShaderM(ACTIVE_SHADER_DEFAULT)
 {
     GLuint vertex_buffer_object;
     GLuint uv_buffer_object;
@@ -79,15 +105,11 @@ Image::Image(std::string const & imagePath, IFrameDispatcher* dispatcher)
     /* clear the array buffer */
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 
-    /* Create shader for the class, if it doesn't exist */
-    if (nullptr == Image::shader)
-    {
-        /* TODO: this is never deleted, could be deleted on system deinit, or when no polygons exist. */
-        Image::shader = new Shader("shaders/ImageVertex.glsl", "shaders/ImageFragment.glsl");
-    }
+    SetShader();
+    pTextureM = new Texture(stbImageM, GL_TEXTURE0);
 
-    pTextureM = new Texture(stbImageM, GL_TEXTURE0, Image::shader, "image");
-
+    SetGaussianFilterSize(0);
+  
     /* Mark object as configured. */
     pFrameDispatcherM = dispatcher;
     pFrameDispatcherM->RegisterFrameListener(this);
@@ -95,23 +117,42 @@ Image::Image(std::string const & imagePath, IFrameDispatcher* dispatcher)
 
 void Image::OnFrame()
 {
-    Image::shader->Enable();
-    pTextureM->Enable();
-   
-    GLuint model_matrix_uniform;
+    Shader* s;
+    Texture* t = pTextureM;
 
-    model_matrix_uniform = glGetUniformLocation(Image::shader->GetProgramID(), "model_matrix");
-    glUniformMatrix4fv(model_matrix_uniform, 1, GL_FALSE, &modelMatrixM[0][0]);
+    renderPipelineM.ClearPipe();
 
-    /* set the vertex array object active */
-    glBindVertexArray(vertexArrayHandleM);
-    /* draw the elements */
-    glDrawArrays(GL_TRIANGLES, 0, vertexCountM);
-    /* clear the array object */
-    glBindVertexArray(0);
+    for (uint32 i = 0; i < shaderQueueM.size(); ++i)
+    {
+        s = shaderQueueM[i];
 
-    pTextureM->Disable();
-    Image::shader->Disable();
+        renderPipelineM.StartRender(t, s);
+
+        /* Not all of these apply to every shader, it fails silently if it does not apply. */
+        GLuint model_matrix_uniform = glGetUniformLocation(s->GetProgramID(), "model_matrix");
+        glUniformMatrix4fv(model_matrix_uniform, 1, GL_FALSE, &modelMatrixM[0][0]);
+
+        GLuint filter_size_uniform = glGetUniformLocation(s->GetProgramID(), "filter_size");
+        glUniform1i(filter_size_uniform, gaussianFilter.size());
+
+        GLuint filter_uniform = glGetUniformLocation(s->GetProgramID(), "filter_1d");
+        glUniform1fv(filter_uniform, gaussianFilter.size(), gaussianFilter.data());
+
+        GLuint res_uniform = glGetUniformLocation(s->GetProgramID(), "resolution");
+        glUniform2i(res_uniform, stbImageM->ReadWidth(), stbImageM->ReadHeight());
+        
+
+        if (i == shaderQueueM.size() - 1)
+        {
+            renderPipelineM.EndRender(true, vertexArrayHandleM, vertexCountM);
+        }
+        else
+        {
+            t = renderPipelineM.EndRender(false, 0, vertexCountM);
+        }
+    }
+
+    return; 
 }
 
 void Image::Translate(glm::vec3 direction)
@@ -120,7 +161,7 @@ void Image::Translate(glm::vec3 direction)
     RawRotate(-currentRotationM);
 
     modelMatrixM *= glm::translate(direction);
-    currentPos += direction;
+    currentPosM += direction;
 
     RawRotate(currentRotationM);
     RawScale(currentScaleM);
@@ -132,8 +173,8 @@ void Image::Scale(GLfloat scaleFactor)
     currentScaleM *= scaleFactor;
 
     /* Also scale the position and translate to zoom on centre */
-    auto newPos = currentPos * scaleFactor;
-    auto translate = newPos - currentPos;
+    auto newPos = currentPosM * scaleFactor;
+    auto translate = newPos - currentPosM;
     Translate(translate);
 }
 
@@ -147,10 +188,9 @@ void Image::Rotate(GLfloat rotationAngle)
     RawRotate(rotationAngle);
     currentRotationM += rotationAngle;
 
-    /* Apply polar rotation on origin so it appears to rotate on centre of screen */
-    auto newPos = glm::rotate(rotationAngle, glm::vec3(0.0f, 0.0f, 1.0f)) * glm::vec4(currentPos, 0.0f);
-
-    Translate((glm::vec3)newPos - currentPos);
+    /* Apply polar rotation on position so it appears to rotate on centre of screen */
+    auto newPos = glm::rotate(rotationAngle, glm::vec3(0.0f, 0.0f, 1.0f)) * glm::vec4(currentPosM, 0.0f);
+    Translate((glm::vec3)newPos - currentPosM);
 }
 
 void Image::RawRotate(GLfloat rotationAngle)
@@ -158,9 +198,199 @@ void Image::RawRotate(GLfloat rotationAngle)
     modelMatrixM *= glm::rotate(rotationAngle, glm::vec3(0.0f, 0.0f, 1.0f));
 }
 
+void Image::IncrementShader()
+{
+    switch (activeShaderM)
+    {
+    case ACTIVE_SHADER_PLAIN:
+        activeShaderM = ACTIVE_SHADER_GREY_1;
+        break;
+    case ACTIVE_SHADER_GREY_1:
+        activeShaderM = ACTIVE_SHADER_GREY_2;
+        break;
+    case ACTIVE_SHADER_GREY_2:
+        activeShaderM = ACTIVE_SHADER_GREY_3;
+        break;
+    case ACTIVE_SHADER_GREY_3:
+        activeShaderM = ACTIVE_SHADER_SEPIA;
+        break;
+    case ACTIVE_SHADER_SEPIA:
+        activeShaderM = ACTIVE_SHADER_HALLOWEEN;
+        break;
+    case ACTIVE_SHADER_HALLOWEEN:
+        activeShaderM = ACTIVE_SHADER_VERTICAL_SOBEL;
+        break;
+    case ACTIVE_SHADER_VERTICAL_SOBEL:
+        activeShaderM = ACTIVE_SHADER_HORIZONTAL_SOBEL;
+        break;
+    case ACTIVE_SHADER_HORIZONTAL_SOBEL:
+        activeShaderM = ACTIVE_SHADER_UNSHARP_MASK;
+        break;
+    case ACTIVE_SHADER_UNSHARP_MASK:
+        activeShaderM = ACTIVE_SHADER_GAUSSIAN_3x3;
+        break;
+    case ACTIVE_SHADER_GAUSSIAN_3x3:
+        activeShaderM = ACTIVE_SHADER_GAUSSIAN_5x5;
+        break;
+    case ACTIVE_SHADER_GAUSSIAN_5x5:
+        activeShaderM = ACTIVE_SHADER_GAUSSIAN_7x7;
+        break;
+    case ACTIVE_SHADER_GAUSSIAN_7x7:
+        activeShaderM = ACTIVE_SHADER_GAUSSIAN_NxN;
+        break;
+    case ACTIVE_SHADER_GAUSSIAN_NxN:
+        activeShaderM = ACTIVE_SHADER_PLAIN;
+        break;
+    default:
+        std::cerr << "Unknown shader" << std::endl;
+        break;
+    }
+
+    SetShader();
+}
+
+void Image::DecrementShader()
+{
+    switch (activeShaderM)
+    {
+    case ACTIVE_SHADER_PLAIN:
+        activeShaderM = ACTIVE_SHADER_GAUSSIAN_NxN;
+        break;
+    case ACTIVE_SHADER_GREY_1:
+        activeShaderM = ACTIVE_SHADER_PLAIN;
+        break;
+    case ACTIVE_SHADER_GREY_2:
+        activeShaderM = ACTIVE_SHADER_GREY_1;
+        break;
+    case ACTIVE_SHADER_GREY_3:
+        activeShaderM = ACTIVE_SHADER_GREY_2;
+        break;
+    case ACTIVE_SHADER_SEPIA:
+        activeShaderM = ACTIVE_SHADER_GREY_3;
+        break;
+    case ACTIVE_SHADER_HALLOWEEN:
+        activeShaderM = ACTIVE_SHADER_SEPIA;
+        break;
+    case ACTIVE_SHADER_VERTICAL_SOBEL:
+        activeShaderM = ACTIVE_SHADER_HALLOWEEN;
+        break;
+    case ACTIVE_SHADER_HORIZONTAL_SOBEL:
+        activeShaderM = ACTIVE_SHADER_VERTICAL_SOBEL;
+        break;
+    case ACTIVE_SHADER_UNSHARP_MASK:
+        activeShaderM = ACTIVE_SHADER_HORIZONTAL_SOBEL;
+        break;
+    case ACTIVE_SHADER_GAUSSIAN_3x3:
+        activeShaderM = ACTIVE_SHADER_UNSHARP_MASK;
+        break;
+    case ACTIVE_SHADER_GAUSSIAN_5x5:
+        activeShaderM = ACTIVE_SHADER_GAUSSIAN_3x3;
+        break;
+    case ACTIVE_SHADER_GAUSSIAN_7x7:
+        activeShaderM = ACTIVE_SHADER_GAUSSIAN_5x5;
+        break;
+    case ACTIVE_SHADER_GAUSSIAN_NxN:
+        activeShaderM = ACTIVE_SHADER_GAUSSIAN_7x7;
+        break;
+    default:
+        std::cerr << "Unknown shader" << std::endl;
+        break;
+    }
+
+    SetShader();
+}
+
+void Image::SetShader()
+{
+    for (auto s : shaderQueueM)
+    {
+        delete s;
+    }
+
+    shaderQueueM.clear();
+
+    /* Effect can be made by an arbitrary number of shaders, the first n-1 shaders
+       are rendered on alternating frame buffers, before the n'th shader is rendered to screen */
+
+    switch (activeShaderM)
+    {
+    case ACTIVE_SHADER_PLAIN:
+        shaderQueueM.push_back(new Shader("shaders/ImageVertexPassthrough.glsl", "shaders/ImageFragment.glsl"));
+        shaderQueueM.push_back(new Shader("shaders/ImageVertex.glsl", "shaders/ImageFragmentPassthrough.glsl"));
+        break;
+    case ACTIVE_SHADER_GREY_1:
+        shaderQueueM.push_back(new Shader("shaders/ImageVertexPassthrough.glsl", "shaders/ImageFragmentGrey1.glsl"));
+        shaderQueueM.push_back(new Shader("shaders/ImageVertex.glsl", "shaders/ImageFragmentPassthrough.glsl"));
+        break;
+    case ACTIVE_SHADER_GREY_2:
+        shaderQueueM.push_back(new Shader("shaders/ImageVertexPassthrough.glsl", "shaders/ImageFragmentGrey2.glsl"));
+        shaderQueueM.push_back(new Shader("shaders/ImageVertex.glsl", "shaders/ImageFragmentPassthrough.glsl"));
+        break;
+    case ACTIVE_SHADER_GREY_3:
+        shaderQueueM.push_back(new Shader("shaders/ImageVertexPassthrough.glsl", "shaders/ImageFragmentGrey3.glsl"));
+        shaderQueueM.push_back(new Shader("shaders/ImageVertex.glsl", "shaders/ImageFragmentPassthrough.glsl"));
+        break;
+    case ACTIVE_SHADER_SEPIA:
+        shaderQueueM.push_back(new Shader("shaders/ImageVertexPassthrough.glsl", "shaders/ImageFragmentSepia.glsl"));
+        shaderQueueM.push_back(new Shader("shaders/ImageVertex.glsl", "shaders/ImageFragmentPassthrough.glsl"));
+        break;
+    case ACTIVE_SHADER_HALLOWEEN:
+        shaderQueueM.push_back(new Shader("shaders/ImageVertexPassthrough.glsl", "shaders/ImageFragmentHalloween.glsl"));
+        shaderQueueM.push_back(new Shader("shaders/ImageVertex.glsl", "shaders/ImageFragmentPassthrough.glsl"));
+        break;
+    case ACTIVE_SHADER_VERTICAL_SOBEL:
+        shaderQueueM.push_back(new Shader("shaders/ImageVertexPassthrough.glsl", "shaders/ImageFragmentVerticalSobel.glsl"));
+        shaderQueueM.push_back(new Shader("shaders/ImageVertex.glsl", "shaders/ImageFragmentPassthrough.glsl"));
+        break;
+    case ACTIVE_SHADER_HORIZONTAL_SOBEL:
+        shaderQueueM.push_back(new Shader("shaders/ImageVertexPassthrough.glsl", "shaders/ImageFragmentHorizontalSobel.glsl"));
+        shaderQueueM.push_back(new Shader("shaders/ImageVertex.glsl", "shaders/ImageFragmentPassthrough.glsl"));
+        break;
+    case ACTIVE_SHADER_UNSHARP_MASK:
+        shaderQueueM.push_back(new Shader("shaders/ImageVertexPassthrough.glsl", "shaders/ImageFragmentUnsharpMask.glsl"));
+        shaderQueueM.push_back(new Shader("shaders/ImageVertex.glsl", "shaders/ImageFragmentPassthrough.glsl"));
+        break;
+    case ACTIVE_SHADER_GAUSSIAN_3x3:
+        shaderQueueM.push_back(new Shader("shaders/ImageVertexPassthrough.glsl", "shaders/ImageFragment2DGaussian3x3.glsl"));
+        shaderQueueM.push_back(new Shader("shaders/ImageVertex.glsl", "shaders/ImageFragmentPassthrough.glsl"));
+        break;
+    case ACTIVE_SHADER_GAUSSIAN_5x5:
+        shaderQueueM.push_back(new Shader("shaders/ImageVertexPassthrough.glsl", "shaders/ImageFragment2DGaussian5x5.glsl"));
+        shaderQueueM.push_back(new Shader("shaders/ImageVertex.glsl", "shaders/ImageFragmentPassthrough.glsl"));
+        break;
+    case ACTIVE_SHADER_GAUSSIAN_7x7:
+        shaderQueueM.push_back(new Shader("shaders/ImageVertexPassthrough.glsl", "shaders/ImageFragment2DGaussian7x7.glsl"));
+        shaderQueueM.push_back(new Shader("shaders/ImageVertex.glsl", "shaders/ImageFragmentPassthrough.glsl"));
+        break;
+    case ACTIVE_SHADER_GAUSSIAN_NxN:
+        shaderQueueM.push_back(new Shader("shaders/ImageVertexPassthrough.glsl", "shaders/ImageFragmentGaussianNHorizontal.glsl"));
+        shaderQueueM.push_back(new Shader("shaders/ImageVertexPassthrough.glsl", "shaders/ImageFragmentGaussianNVertical.glsl"));
+        shaderQueueM.push_back(new Shader("shaders/ImageVertex.glsl", "shaders/ImageFragmentPassthrough.glsl"));
+        break;
+    default:
+        std::cerr << "Unknown shader" << std::endl;
+        break;
+    }
+}
+
+void Image::SetGaussianFilterSize(GLint size)
+{
+    if (size < 0 || size > MAX_FILTER_SIZE)
+    {
+        std::cout << "Filter too small or too large: " << size << std::endl;
+        return;
+    }
+
+    gaussianFilter = GetGaussianFilter(size * 2 + 1);
+}
+
 Image::~Image()
 {
     delete pTextureM;
+    for (auto s : shaderQueueM)
+    {
+        delete s;
+    }
     delete stbImageM;
     pFrameDispatcherM->UnregisterFrameListener(this);
     glDeleteBuffers(buffersToFreeM.size(), &buffersToFreeM[0]);
@@ -216,4 +446,35 @@ std::vector<glm::vec2> Image::GetInitialUVs() const
     return uvs;
 }
 
-Shader* Image::shader = nullptr;
+std::vector<GLfloat> Image::GetGaussianFilter(GLint width) const
+{
+    std::vector<GLfloat> filter;
+
+    GLfloat sum = 0.0f;
+
+    for (int i = -width / 2; i <= width / 2; ++i)
+    {
+        GLfloat exponent = -1.0f * (i * i) / (2 * SIGMA * SIGMA);
+        GLfloat factor = 1.0f / glm::sqrt(2 * PI * SIGMA * SIGMA);
+
+        GLfloat gauss = factor * glm::pow(E, exponent);
+
+        filter.push_back(gauss);
+
+        sum += filter.back();
+    }
+
+    /* Normalize */
+    for (uint32 i = 0; i < filter.size(); ++i)
+    {
+        filter[i] /= sum;
+        std::cout << filter[i] << std::endl;
+    }
+    
+    return filter;
+}
+
+void createFramebuffer(GLuint& fbo, GLuint &fbtex)
+{
+    
+}

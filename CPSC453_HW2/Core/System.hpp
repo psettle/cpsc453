@@ -47,7 +47,7 @@ public:
     /**
         Implementation of IFrameDispatcher
     */
-    void RegisterFrameListener(IFrameListener* listener);
+    void RegisterFrameListener(IFrameListener* listener, bool pushFront);
     bool UnregisterFrameListener(IFrameListener* listener);
 
     /**

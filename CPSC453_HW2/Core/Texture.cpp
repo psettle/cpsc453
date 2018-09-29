@@ -18,12 +18,9 @@ notes:
                        DECLARATIONS
 **********************************************************/
 
-Texture::Texture(StbImage* image, const GLuint slot, Shader* shader, const std::string& hook_name)
+Texture::Texture(StbImage* image, const GLuint slot)
+    :slot(slot)
 {
-	this->slot = slot;
-	this->shader = shader;
-	this->hook_name = hook_name;
-
 	/* generate and bind a texture */
 	glGenTextures(1, &this->textureID);
 	glBindTexture(GL_TEXTURE_2D, this->textureID);
@@ -36,12 +33,30 @@ Texture::Texture(StbImage* image, const GLuint slot, Shader* shader, const std::
 	glBindTexture(GL_TEXTURE_2D, 0);
 }
 
+Texture::Texture(GLuint width, GLuint height)
+{
+    /* generate and bind a texture */
+    glGenTextures(1, &this->textureID);
+    glBindTexture(GL_TEXTURE_2D, this->textureID);
+
+    /* bind the image data to the texture */
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+
+    /* clear the bound texture */
+    glBindTexture(GL_TEXTURE_2D, 0);
+}
+
+GLuint Texture::GetTextureHandle() const
+{
+    return textureID;
+}
+
 void Texture::Enable() const
 {
 	glActiveTexture(this->slot);
 	glBindTexture(GL_TEXTURE_2D, this->textureID);
-	GLuint UID = glGetUniformLocation(this->shader->GetProgramID(), this->hook_name.c_str());
-	glUniform1i(UID, this->slot - GL_TEXTURE0);
 }
 
 void Texture::Disable() const
@@ -52,6 +67,5 @@ void Texture::Disable() const
 
 Texture::~Texture()
 {
-	shader = NULL;
 	glDeleteTextures(1, &this->textureID);
 }

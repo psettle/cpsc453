@@ -17,6 +17,7 @@ notes:
 #include "Shader.hpp"
 #include "StbImage.hpp"
 #include "Texture.hpp"
+#include "RenderPipeline.hpp"
 
 /**********************************************************
                         CONSTANTS
@@ -25,6 +26,8 @@ notes:
 /**********************************************************
                        DECLARATIONS
 **********************************************************/
+
+enum ActiveShaderEnum;
 
 class Image : public IFrameListener
 {
@@ -37,30 +40,47 @@ public:
 
     void Rotate(GLfloat rotationAngle);
 
+    void IncrementShader();
+
+    void DecrementShader();
+
+    void SetGaussianFilterSize(GLint size);
+
     virtual void OnFrame();
 
     virtual ~Image();
 protected:
+
+    void SetShader();
 
     void RawScale(GLfloat scaleFactor);
     void RawRotate(GLfloat rotationAngle);
 
     std::vector<glm::vec3> GetInitialVertices() const;
     std::vector<glm::vec2> GetInitialUVs() const;
+    std::vector<GLfloat> GetGaussianFilter(GLint width) const;
 
-    GLuint vertexArrayHandleM = 0;
     GLuint vertexCountM = 0;
+    GLuint vertexArrayHandleM = 0;
     std::vector<GLuint> buffersToFreeM;
 
     IFrameDispatcher* pFrameDispatcherM = nullptr;
-    static Shader* shader;
+
+    Shader*               pShaderM = nullptr;
+    std::vector<Shader*>  shaderQueueM;
+    ActiveShaderEnum    activeShaderM;
+
     StbImage* stbImageM = nullptr;
     Texture* pTextureM = nullptr;
 
+    RenderPipeline renderPipelineM;
+
     glm::mat4 modelMatrixM = glm::mat4(1.0f);
     GLfloat currentScaleM = 1.0f;
-    glm::vec3 currentPos = glm::vec3(0.0f);
+    glm::vec3 currentPosM = glm::vec3(0.0f);
     GLfloat currentRotationM = 0.0f;
+
+    std::vector<float> gaussianFilter;
 };
 
 /**********************************************************

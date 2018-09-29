@@ -26,7 +26,11 @@ notes:
 class Texture {
 public:
 
-	Texture(StbImage* image, const GLuint slot, Shader* shader, const std::string& hook_name);
+	Texture(StbImage* image, const GLuint slot);
+
+    Texture(GLuint width, GLuint height);
+
+    GLuint GetTextureHandle() const;
 
 	void Enable() const;
 
@@ -38,13 +42,6 @@ private:
 	GLuint textureID;
 
 	GLuint slot;
-
-	Shader* shader;
-
-	/*
-		The name of the uniform variable the texture data will be passed to
-	*/
-	std::string hook_name;
 };
 
 /**********************************************************

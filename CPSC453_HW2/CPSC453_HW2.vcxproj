@@ -135,6 +135,7 @@
     <ClCompile Include="Apps\Image.cpp" />
     <ClCompile Include="Core\AppManager.cpp" />
     <ClCompile Include="Core\main.cpp" />
+    <ClCompile Include="Core\RenderPipeline.cpp" />
     <ClCompile Include="Core\Shader.cpp" />
     <ClCompile Include="Core\StbImage.cpp" />
     <ClCompile Include="Core\StbImplementation.cpp" />
@@ -142,6 +143,7 @@
     <ClCompile Include="Core\Texture.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Apps\BackgroundImage.hpp" />
     <ClInclude Include="Apps\Image.hpp" />
     <ClInclude Include="Apps\ImagesApp.hpp" />
     <ClInclude Include="Core\AppManager.hpp" />
@@ -151,6 +153,7 @@
     <ClInclude Include="Core\IFrameListener.hpp" />
     <ClInclude Include="Core\IInputDispatcher.hpp" />
     <ClInclude Include="Core\IInputListener.hpp" />
+    <ClInclude Include="Core\RenderPipeline.hpp" />
     <ClInclude Include="Core\Shader.hpp" />
     <ClInclude Include="Core\StbImage.hpp" />
     <ClInclude Include="Core\System.hpp" />

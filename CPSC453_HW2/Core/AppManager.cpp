@@ -25,6 +25,14 @@ notes:
                        DEFINITIONS
 **********************************************************/
 
+enum ActiveAppEnum
+{
+    ACTIVE_APP_IMAGES,
+
+    ACTIVE_APP_COUNT,
+    ACTIVE_APP_DEFAULT = ACTIVE_APP_IMAGES
+};
+
 AppManager::AppManager(IFrameDispatcher* frameDispatcher, IInputDispatcher* inputDispatcher)
     : pFrameDispatcherM(frameDispatcher), pInputDispatcherM(inputDispatcher)
 {
@@ -40,15 +48,16 @@ void AppManager::OnFrame()
 
 void AppManager::OnKey(GLint key, GLint action)
 {
-    if (key == GLFW_KEY_UP && action == GLFW_RELEASE)
-    {
-        IncrementActiveApp();
-    }
+    /* All done in one app, so hijacking these keys for controlling gaussian filter degree */
+    //if (key == GLFW_KEY_UP && action == GLFW_RELEASE)
+    //{
+    //    IncrementActiveApp();
+    //}
 
-    if (key == GLFW_KEY_DOWN && action == GLFW_RELEASE)
-    {
-        DecrementActiveApp();
-    }
+    //if (key == GLFW_KEY_DOWN && action == GLFW_RELEASE)
+    //{
+    //    DecrementActiveApp();
+    //}
 }
 
 void AppManager::IncrementActiveApp()

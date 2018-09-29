@@ -32,13 +32,7 @@ notes:
                        DEFINITIONS
 **********************************************************/
 
-enum ActiveAppEnum
-{
-    ACTIVE_APP_IMAGES,
-
-    ACTIVE_APP_COUNT,
-    ACTIVE_APP_DEFAULT = ACTIVE_APP_IMAGES
-};
+enum ActiveAppEnum;
 
 class AppManager: public IFrameListener, public IInputListener
 {
@@ -90,7 +84,7 @@ protected:
 
     IFrameDispatcher* pFrameDispatcherM = nullptr;
     IInputDispatcher* pInputDispatcherM = nullptr;
-    ActiveAppEnum     activeAppEnumM = ACTIVE_APP_DEFAULT;
+    ActiveAppEnum     activeAppEnumM;
     IApp*             pActiveAppM = nullptr;
 };
 

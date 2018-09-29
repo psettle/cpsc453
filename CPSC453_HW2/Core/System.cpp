@@ -17,8 +17,6 @@ notes:
 /**********************************************************
                         CONSTANTS
 **********************************************************/
-static const uint16 WINDOW_WIDTH = 1000;
-static const uint16 WINDOW_HEIGHT = 1000;
 static const std::string WINDOW_NAME = "CPSC453_HW1";
 
 /**********************************************************
@@ -77,11 +75,22 @@ System::System()
     glfwSetMouseButtonCallback(pWindowM, StaticMouseButtonCallback);
     glfwSetScrollCallback(pWindowM, StaticScrollCallback);
     glfwSetCursorPosCallback(pWindowM, StaticMousePositionCallback);
+
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    glEnable(GL_BLEND);
 }
 
-void System::RegisterFrameListener(IFrameListener* listener)
+void System::RegisterFrameListener(IFrameListener* listener, bool pushFront)
 {
-    frameListenersM.push_back(listener);
+    if (pushFront)
+    {
+        frameListenersM.insert(frameListenersM.begin(), listener);
+    }
+    else
+    {
+        frameListenersM.push_back(listener);
+    }
+    
 }
 
 bool System::UnregisterFrameListener(IFrameListener* listener)
@@ -143,7 +152,7 @@ void System::Frame()
 {
     glfwPollEvents();
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+    //glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
 
     for (uint32 i = 0; i < frameListenersM.size(); ++i)
     {

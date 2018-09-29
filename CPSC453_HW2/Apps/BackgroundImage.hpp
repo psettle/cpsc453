@@ -1,9 +1,9 @@
-#ifndef IFRAMEDISPATCHER_H
-#define IFRAMEDISPATCHER_H
+#ifndef BACKGROUNDIMAGE_H
+#define BACKGROUNDIMAGE_H
 
 /**
-file: IFrameListener.hpp
-brief: Interface for receiving frame events.
+file: BackgroundImage.hpp
+brief: Shows an openGL 2D image.
 notes:
 */
 
@@ -11,7 +11,13 @@ notes:
                         INCLUDES
 **********************************************************/
 
+#include "Common.hpp"
 #include "IFrameListener.hpp"
+#include "IFrameDispatcher.hpp"
+#include "Shader.hpp"
+#include "StbImage.hpp"
+#include "Texture.hpp"
+#include "Image.hpp"
 
 /**********************************************************
                         CONSTANTS
@@ -21,25 +27,24 @@ notes:
                        DECLARATIONS
 **********************************************************/
 
-class IFrameDispatcher
+class BackgroundImage : public Image
 {
 public:
-    /**
-        Register a listener for frame events.
-     */
-    virtual void RegisterFrameListener(IFrameListener* listener, bool pushFront = false) = 0;
-    /**
-        Unregister a listener for frame events.
+    BackgroundImage(std::string const & imagePath, IFrameDispatcher* dispatcher)
+        : Image::Image(imagePath, dispatcher)
+    {
+        /* Move to front of render queue. */
+        pFrameDispatcherM->UnregisterFrameListener(this);
+        pFrameDispatcherM->RegisterFrameListener(this, true);
+    }
 
-        return:
-            true on success,
-            false on failure (listener was not registered)
-    */
-    virtual bool UnregisterFrameListener(IFrameListener* listener) = 0;
+protected:
 };
 
 /**********************************************************
                        DEFINITIONS
 **********************************************************/
 
-#endif /* IFRAMEDISPATCHER_H */
+
+
+#endif /* BACKGROUNDIMAGE_H */
