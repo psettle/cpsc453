@@ -21,7 +21,7 @@ notes:
 
 #define SIGMA 200.0f /* This is quite extreme, and it makes the filter stangley chuncky, but it allows you to still see changes up to several hundred pixels. */
 #define E     2.718281828459045235360287471352662497757247093699959574966967627724076630353f
-#define MAX_FILTER_SIZE 200 /* Max kernal size is 401x401, which covers essentially the whole image. */
+#define MAX_FILTER_SIZE 401 /* Max kernal size is 401x401, which covers essentially the whole image. */
 
 /**********************************************************
                        DECLARATIONS
@@ -315,54 +315,67 @@ void Image::SetShader()
     switch (activeShaderM)
     {
     case ACTIVE_SHADER_PLAIN:
+        std::cout << "ACTIVE_SHADER_PLAIN" << std::endl;
         shaderQueueM.push_back(new Shader("shaders/ImageVertexPassthrough.glsl", "shaders/ImageFragment.glsl"));
         shaderQueueM.push_back(new Shader("shaders/ImageVertex.glsl", "shaders/ImageFragmentPassthrough.glsl"));
         break;
     case ACTIVE_SHADER_GREY_1:
+        std::cout << "ACTIVE_SHADER_GREY_1" << std::endl;
         shaderQueueM.push_back(new Shader("shaders/ImageVertexPassthrough.glsl", "shaders/ImageFragmentGrey1.glsl"));
         shaderQueueM.push_back(new Shader("shaders/ImageVertex.glsl", "shaders/ImageFragmentPassthrough.glsl"));
         break;
     case ACTIVE_SHADER_GREY_2:
+        std::cout << "ACTIVE_SHADER_GREY_2" << std::endl;
         shaderQueueM.push_back(new Shader("shaders/ImageVertexPassthrough.glsl", "shaders/ImageFragmentGrey2.glsl"));
         shaderQueueM.push_back(new Shader("shaders/ImageVertex.glsl", "shaders/ImageFragmentPassthrough.glsl"));
         break;
     case ACTIVE_SHADER_GREY_3:
+        std::cout << "ACTIVE_SHADER_GREY_3" << std::endl;
         shaderQueueM.push_back(new Shader("shaders/ImageVertexPassthrough.glsl", "shaders/ImageFragmentGrey3.glsl"));
         shaderQueueM.push_back(new Shader("shaders/ImageVertex.glsl", "shaders/ImageFragmentPassthrough.glsl"));
         break;
     case ACTIVE_SHADER_SEPIA:
+        std::cout << "ACTIVE_SHADER_SEPIA" << std::endl;
         shaderQueueM.push_back(new Shader("shaders/ImageVertexPassthrough.glsl", "shaders/ImageFragmentSepia.glsl"));
         shaderQueueM.push_back(new Shader("shaders/ImageVertex.glsl", "shaders/ImageFragmentPassthrough.glsl"));
         break;
     case ACTIVE_SHADER_HALLOWEEN:
+        std::cout << "ACTIVE_SHADER_HALLOWEEN" << std::endl;
         shaderQueueM.push_back(new Shader("shaders/ImageVertexPassthrough.glsl", "shaders/ImageFragmentHalloween.glsl"));
         shaderQueueM.push_back(new Shader("shaders/ImageVertex.glsl", "shaders/ImageFragmentPassthrough.glsl"));
         break;
     case ACTIVE_SHADER_VERTICAL_SOBEL:
+        std::cout << "ACTIVE_SHADER_VERTICAL_SOBEL" << std::endl;
         shaderQueueM.push_back(new Shader("shaders/ImageVertexPassthrough.glsl", "shaders/ImageFragmentVerticalSobel.glsl"));
         shaderQueueM.push_back(new Shader("shaders/ImageVertex.glsl", "shaders/ImageFragmentPassthrough.glsl"));
         break;
     case ACTIVE_SHADER_HORIZONTAL_SOBEL:
+        std::cout << "ACTIVE_SHADER_HORIZONTAL_SOBEL" << std::endl;
         shaderQueueM.push_back(new Shader("shaders/ImageVertexPassthrough.glsl", "shaders/ImageFragmentHorizontalSobel.glsl"));
         shaderQueueM.push_back(new Shader("shaders/ImageVertex.glsl", "shaders/ImageFragmentPassthrough.glsl"));
         break;
     case ACTIVE_SHADER_UNSHARP_MASK:
+        std::cout << "ACTIVE_SHADER_UNSHARP_MASK" << std::endl;
         shaderQueueM.push_back(new Shader("shaders/ImageVertexPassthrough.glsl", "shaders/ImageFragmentUnsharpMask.glsl"));
         shaderQueueM.push_back(new Shader("shaders/ImageVertex.glsl", "shaders/ImageFragmentPassthrough.glsl"));
         break;
     case ACTIVE_SHADER_GAUSSIAN_3x3:
+        std::cout << "ACTIVE_SHADER_GAUSSIAN_3x3" << std::endl;
         shaderQueueM.push_back(new Shader("shaders/ImageVertexPassthrough.glsl", "shaders/ImageFragment2DGaussian3x3.glsl"));
         shaderQueueM.push_back(new Shader("shaders/ImageVertex.glsl", "shaders/ImageFragmentPassthrough.glsl"));
         break;
     case ACTIVE_SHADER_GAUSSIAN_5x5:
+        std::cout << "ACTIVE_SHADER_GAUSSIAN_5x5" << std::endl;
         shaderQueueM.push_back(new Shader("shaders/ImageVertexPassthrough.glsl", "shaders/ImageFragment2DGaussian5x5.glsl"));
         shaderQueueM.push_back(new Shader("shaders/ImageVertex.glsl", "shaders/ImageFragmentPassthrough.glsl"));
         break;
     case ACTIVE_SHADER_GAUSSIAN_7x7:
+        std::cout << "ACTIVE_SHADER_GAUSSIAN_7x7" << std::endl;
         shaderQueueM.push_back(new Shader("shaders/ImageVertexPassthrough.glsl", "shaders/ImageFragment2DGaussian7x7.glsl"));
         shaderQueueM.push_back(new Shader("shaders/ImageVertex.glsl", "shaders/ImageFragmentPassthrough.glsl"));
         break;
     case ACTIVE_SHADER_GAUSSIAN_NxN:
+        std::cout << "ACTIVE_SHADER_GAUSSIAN_NxN" << std::endl;
         shaderQueueM.push_back(new Shader("shaders/ImageVertexPassthrough.glsl", "shaders/ImageFragmentGaussianNHorizontal.glsl"));
         shaderQueueM.push_back(new Shader("shaders/ImageVertexPassthrough.glsl", "shaders/ImageFragmentGaussianNVertical.glsl"));
         shaderQueueM.push_back(new Shader("shaders/ImageVertex.glsl", "shaders/ImageFragmentPassthrough.glsl"));
@@ -373,15 +386,23 @@ void Image::SetShader()
     }
 }
 
-void Image::SetGaussianFilterSize(GLint size)
+bool Image::SetGaussianFilterSize(GLint size)
 {
+    size = size * 2 + 1;
+
     if (size < 0 || size > MAX_FILTER_SIZE)
     {
-        std::cout << "Filter too small or too large: " << size << std::endl;
-        return;
+        std::cout << "Gaussian filter too small or too large: " << size << std::endl;
+        return false;
+    }
+    else
+    {
+        std::cout << "Gaussian filter set to: " << size << std::endl;
     }
 
-    gaussianFilter = GetGaussianFilter(size * 2 + 1);
+    gaussianFilter = GetGaussianFilter(size);
+
+    return true;
 }
 
 Image::~Image()

@@ -100,10 +100,16 @@ void ImagesApp::OnKey(GLint key, GLint action)
         pImageM->DecrementShader();
         break;
     case GLFW_KEY_UP:
-        pImageM->SetGaussianFilterSize(++gaussianFilterScale);
+        if (!pImageM->SetGaussianFilterSize(++gaussianFilterScale))
+        {
+            gaussianFilterScale--;
+        }
         break;
     case GLFW_KEY_DOWN:
-        pImageM->SetGaussianFilterSize(--gaussianFilterScale);
+        if (!pImageM->SetGaussianFilterSize(--gaussianFilterScale))
+        {
+            gaussianFilterScale++;
+        }
         break;
     default:
         break;

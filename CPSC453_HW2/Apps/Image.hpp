@@ -44,7 +44,7 @@ public:
 
     void DecrementShader();
 
-    void SetGaussianFilterSize(GLint size);
+    bool SetGaussianFilterSize(GLint size);
 
     virtual void OnFrame();
 
