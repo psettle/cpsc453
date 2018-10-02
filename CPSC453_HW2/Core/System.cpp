@@ -17,7 +17,7 @@ notes:
 /**********************************************************
                         CONSTANTS
 **********************************************************/
-static const std::string WINDOW_NAME = "CPSC453_HW1";
+static const std::string WINDOW_NAME = "CPSC453_HW2";
 
 /**********************************************************
                        DECLARATIONS

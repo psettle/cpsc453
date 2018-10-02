@@ -32,7 +32,7 @@ void main() {
 		}
 	}
 
-	sum.w = 1.0f; /* Reset alpha so the results actually show up */
+	sum.w = texture(image, UV).w; /* Reset alpha so the results actually show up */
 
 	if(USE_ABS)
 	{

@@ -13,5 +13,5 @@ void main() {
 	float G = 0.349 * color.x + 0.686 * color.y + 0.168 * color.z;
 	float B = 0.272 * color.x + 0.534 * color.y + 0.131 * color.z;
 
-	color = vec4(R,G,B,1.0f);
+	color = vec4(R,G,B,color.w);
 }

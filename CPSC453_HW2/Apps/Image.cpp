@@ -19,7 +19,7 @@ notes:
                         CONSTANTS
 **********************************************************/
 
-#define SIGMA 100.0f /* This is quite extreme, and it makes the filter stangley chuncky, but it allows you to still see changes up to several hundred pixels. */
+#define SIGMA 200.0f /* This is quite extreme, and it makes the filter stangley chuncky, but it allows you to still see changes up to several hundred pixels. */
 #define E     2.718281828459045235360287471352662497757247093699959574966967627724076630353f
 #define MAX_FILTER_SIZE 200 /* Max kernal size is 401x401, which covers essentially the whole image. */
 
@@ -468,13 +468,7 @@ std::vector<GLfloat> Image::GetGaussianFilter(GLint width) const
     for (uint32 i = 0; i < filter.size(); ++i)
     {
         filter[i] /= sum;
-        std::cout << filter[i] << std::endl;
     }
     
     return filter;
-}
-
-void createFramebuffer(GLuint& fbo, GLuint &fbtex)
-{
-    
 }

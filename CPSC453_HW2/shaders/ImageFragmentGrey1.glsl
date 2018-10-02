@@ -10,6 +10,6 @@ void main() {
 
 	float L = 0.333 * color.x + 0.333 * color.y + 0.333 * color.z;
 
-	color = vec4(L,L,L,1.0f);
+	color = vec4(L,L,L,color.w);
 
 }

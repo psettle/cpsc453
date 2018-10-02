@@ -27,19 +27,19 @@ notes:
 **********************************************************/
 
 static const std::vector<std::string> backgroundPaths = {
-    "Images/protoss.jpg",
-    "Images/CircleTest.JPG",
-    "Images/Codex.jpg"
+    "Images/background1-asphalt.jpg",
+    "Images/background2-marble.jpg",
+    "Images/background3-wood.jpg"
 };
 
 static const std::vector<std::string> imagePaths = {
-    "Images/protoss.jpg",
-    "Images/CircleTest.JPG",
-    "Images/f7f289d9-2a18-48d7-b3de-833bd735a605.jpg",
-    "Images/Codex.jpg",
-    "Images/Unsharped_eye.jpg",
-    "Images/FridayMediaTransparent.png",
-    "image7"
+    "Images/image1-mandrill.png",
+    "Images/image2-uclogo.png",
+    "Images/image3-aerial.jpg",
+    "Images/image4-thirsk.jpg",
+    "Images/image5-pattern.png",
+    "Images/image6-bubble.png",
+    "Images/Codex.jpg"
 };
 
 ImagesApp::ImagesApp(IFrameDispatcher* frameDispatcher, IInputDispatcher* inputDispatcher)
