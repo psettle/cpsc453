@@ -39,6 +39,7 @@ System::System()
     /* Init glfw */
     if (!glfwInit())
     {
+        std::cout << "glfwInit fail" << std::endl;
         return;
     }
 
@@ -53,6 +54,7 @@ System::System()
     /* if the window creation failed, return */
     if (pWindowM == NULL)
     {
+        std::cout << "glfwCreateWindow fail" << std::endl;
         return;
     }
 
@@ -63,6 +65,7 @@ System::System()
     glewExperimental = true;
     if (glewInit() != GLEW_OK)
     {
+        std::cout << "glewInit fail" << std::endl;
         return;
     }
 
@@ -90,7 +93,7 @@ void System::RegisterFrameListener(IFrameListener* listener, bool pushFront)
     {
         frameListenersM.push_back(listener);
     }
-    
+
 }
 
 bool System::UnregisterFrameListener(IFrameListener* listener)

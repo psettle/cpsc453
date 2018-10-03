@@ -20,8 +20,13 @@ INCLUDE += Core
 SOURCES += Core/AppManager.cpp
 SOURCES += Core/Shader.cpp
 SOURCES += Core/System.cpp
+SOURCES += Core/RenderPipeline.cpp
+SOURCES += Core/Texture.cpp
+SOURCES += Core/StbImage.cpp
+SOURCES += Core/StbImplementation.cpp
 
-SOURCES += Apps/ImageApp.cpp
+SOURCES += Apps/ImagesApp.cpp
+SOURCES += Apps/Image.cpp
 
 #lib includes
 LIBS += -lglfw

@@ -137,9 +137,9 @@ void ImagesApp::OnScroll(GLdouble scroll)
         {
             scaleAmount = (GLfloat)(1.0f + 0.07f * scroll);
         }
-      
+
         pImageM->Scale(scaleAmount);
-    }   
+    }
 }
 
 void ImagesApp::OnMouseMove(GLdouble xpos, GLdouble ypos)
@@ -175,7 +175,7 @@ void ImagesApp::SetImage(GLuint imageID)
     {
         delete pImageM;
     }
-    
+
     pImageM = new Image(imagePaths[imageID], pFrameDispatcherM);
 }
 

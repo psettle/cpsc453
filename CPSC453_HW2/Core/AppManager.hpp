@@ -32,7 +32,13 @@ notes:
                        DEFINITIONS
 **********************************************************/
 
-enum ActiveAppEnum;
+enum ActiveAppEnum
+{
+    ACTIVE_APP_IMAGES,
+
+    ACTIVE_APP_COUNT,
+    ACTIVE_APP_DEFAULT = ACTIVE_APP_IMAGES
+};
 
 class AppManager: public IFrameListener, public IInputListener
 {

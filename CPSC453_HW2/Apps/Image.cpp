@@ -31,27 +31,6 @@ notes:
                        DEFINITIONS
 **********************************************************/
 
-enum ActiveShaderEnum
-{
-    ACTIVE_SHADER_PLAIN,
-    ACTIVE_SHADER_GREY_1,
-    ACTIVE_SHADER_GREY_2,
-    ACTIVE_SHADER_GREY_3,
-    ACTIVE_SHADER_SEPIA,
-    ACTIVE_SHADER_HALLOWEEN, /* Switched the R & G values, makes things look orange & green kinda. */
-    ACTIVE_SHADER_VERTICAL_SOBEL,
-    ACTIVE_SHADER_HORIZONTAL_SOBEL,
-    ACTIVE_SHADER_UNSHARP_MASK,
-    ACTIVE_SHADER_GAUSSIAN_3x3,
-    ACTIVE_SHADER_GAUSSIAN_5x5,
-    ACTIVE_SHADER_GAUSSIAN_7x7,
-    ACTIVE_SHADER_GAUSSIAN_NxN,
-
-    ACTIVE_SHADER_COUNT,
-    ACTIVE_SHADER_DEFAULT = ACTIVE_SHADER_PLAIN,
-    ACTIVE_SHADER_COUNT_RESOLUTION_REQUIRED_LINE = ACTIVE_SHADER_VERTICAL_SOBEL
-};
-
 Image::Image(std::string const & imagePath, IFrameDispatcher* dispatcher)
     : activeShaderM(ACTIVE_SHADER_DEFAULT)
 {
@@ -72,7 +51,7 @@ Image::Image(std::string const & imagePath, IFrameDispatcher* dispatcher)
     glGenVertexArrays(1, &vertexArrayHandleM);
     glGenBuffers(1, &vertex_buffer_object);
     glGenBuffers(1, &uv_buffer_object);
-    
+
     /* add all the new buffers to the list of buffers to delete */
     buffersToFreeM.push_back(vertex_buffer_object);
     buffersToFreeM.push_back(uv_buffer_object);
@@ -109,7 +88,7 @@ Image::Image(std::string const & imagePath, IFrameDispatcher* dispatcher)
     pTextureM = new Texture(stbImageM, GL_TEXTURE0);
 
     SetGaussianFilterSize(0);
-  
+
     /* Mark object as configured. */
     pFrameDispatcherM = dispatcher;
     pFrameDispatcherM->RegisterFrameListener(this);
@@ -140,7 +119,7 @@ void Image::OnFrame()
 
         GLuint res_uniform = glGetUniformLocation(s->GetProgramID(), "resolution");
         glUniform2i(res_uniform, stbImageM->ReadWidth(), stbImageM->ReadHeight());
-        
+
 
         if (i == shaderQueueM.size() - 1)
         {
@@ -152,7 +131,7 @@ void Image::OnFrame()
         }
     }
 
-    return; 
+    return;
 }
 
 void Image::Translate(glm::vec3 direction)
@@ -490,6 +469,6 @@ std::vector<GLfloat> Image::GetGaussianFilter(GLint width) const
     {
         filter[i] /= sum;
     }
-    
+
     return filter;
 }
