@@ -429,9 +429,6 @@ std::vector<glm::vec3> Image::GetInitialVertices() const
 
 std::vector<glm::vec2> Image::GetInitialUVs() const
 {
-    GLfloat yPos = 1.0f;
-    GLfloat xPos = 1.0f;
-
     std::vector<glm::vec2> uvs =
     {
         glm::vec2(0.0f, 1.0f),
