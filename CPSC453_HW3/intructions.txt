@@ -1,0 +1,31 @@
+======== Build Instructions ===========
+
+------ Windows --------
+Open ../CPSC453_HW1.sln with visualstudio 2017
+Select CPSC453_HW3 in the solution explorer
+Switch to Release mode
+Menu -> Build -> Clean
+Menu -> Build -> Build
+
+To run: ctrl + F5
+
+
+------ Linux ---------
+In this folder:
+make clean
+make all
+./out/cpsc453_hw3.exe
+
+(Tested on cpsc labs, other linux system may be missing libraries)
+
+========= Usage Instructions ===========
+
+Use "Up Arrow" and "Down Arrow" to cycle through the scenes/parts of the assignment
+
+Use "Right Arrow" and "Left Arrow" to cycle through fonts where applicable
+
+Use "D" to speed up the font scroll for the last part.
+
+Use "A" to slow down the font scroll for the last part.
+
+To exit, click the close button, or Alt + F4 (Windows). I didn't hook up the esc key.

@@ -27,5 +27,8 @@ To change the active filter -> Right arrow/Left arrow.
 To select the size of the kernal for the bonus section -> Up arrow/Down arrow. Hold to quickly go into the hundreds.
 	The current size of the filter is printed every time it is changed.
 
-
+To scale the image, use the scroll wheel.
+To rotate the image, hold shift and use the scroll wheel.
+To pan the image, click and drag.
+	
 To exit, click the close button, or Alt + F4 (Windows). I didn't hook up the esc key.
