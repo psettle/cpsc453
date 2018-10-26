@@ -12,6 +12,7 @@ INCLUDE=
 INCLUDE += include
 INCLUDE += include/GL
 INCLUDE += include/GLFW
+INCLUDE += include/freetype
 
 INCLUDE += Apps
 INCLUDE += Core
@@ -22,18 +23,20 @@ SOURCES += Core/AppManager.cpp
 SOURCES += Core/Shader.cpp
 SOURCES += Core/System.cpp
 
-SOURCES += Apps/BarnsleyFernApp.cpp
-SOURCES += Apps/SierpinskiApp.cpp
-SOURCES += Apps/SpiralApp.cpp
-SOURCES += Apps/HilbertSpaceCurveApp.cpp
-SOURCES += Apps/SierpinskiDotsApp.cpp
-SOURCES += Apps/SquareDiamondApp.cpp
+SOURCES += Apps/BezierApp.cpp
+SOURCES += Apps/BezierCubeApp.cpp
+SOURCES += Apps/BezierQuadApp.cpp
+SOURCES += Apps/NameApp.cpp
+SOURCES += Apps/StarWarsApp.cpp
 
-SOURCES += Polygon/Circle.cpp
-SOURCES += Polygon/Spiral.cpp
-SOURCES += Polygon/Square.cpp
+SOURCES += Polygon/Bezier.cpp
+SOURCES += Polygon/BezierControlLines.cpp
+SOURCES += Polygon/BezierControlPoints.cpp
+SOURCES += Polygon/GlyphPolygon.cpp
 SOURCES += Polygon/Polygon.cpp
-SOURCES += Polygon/EquilateralTriangle.cpp
+SOURCES += Polygon/StringPolygon.cpp
+
+SOURCES += include/GlyphExtractor.cpp
 
 #lib includes
 LIBS += -lglfw
@@ -42,12 +45,10 @@ LIBS += linux-lib/libGLEW.a
 LIBS += -lX11
 LIBS += -ldl
 LIBS += -lpthread
-
-
-
+LIBS += -lfreetype
 
 #more setup
-EXECUTABLE=out/cpsc453_hw1.exe
+EXECUTABLE=out/cpsc453_hw3.exe
 EXECUTABLE_MAIN=Core/main.cpp
 EXECUTABLE_MAIN_O=$(EXECUTABLE_MAIN:%.cpp=out/%.o)
 

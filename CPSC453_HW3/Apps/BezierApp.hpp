@@ -38,7 +38,7 @@ public:
 
 protected:
 
-    IFrameDispatcher*       pFrameDispatcherM = nullptr;
+    IFrameDispatcher*       pFrameDispatcherM;
     std::vector<Polygon*>   activeShapesM;
 };
 

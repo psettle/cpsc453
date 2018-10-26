@@ -36,7 +36,7 @@ struct BezierCubeControlPoints
                        DEFINITIONS
 **********************************************************/
 
-BezierCubeControlPoints curves[] =
+static BezierCubeControlPoints curves[] =
 {
     {
         glm::vec3(1.0f, 1.0f, 0.0f),

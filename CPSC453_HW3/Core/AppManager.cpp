@@ -83,7 +83,7 @@ void AppManager::IncrementActiveApp()
     default:
         break;
     }
-    
+
     SetCurrentApp();
 }
 void AppManager::DecrementActiveApp()
@@ -127,6 +127,8 @@ void AppManager::SetCurrentApp()
     case ACTIVE_APP_STARWARS:
         pActiveAppM = new StarWarsApp(pFrameDispatcherM, pInputPollerM);
         break;
+    default:
+      break;
     }
 }
 

@@ -39,9 +39,9 @@ public:
 
     void ProcessFontSelectionInput();
 
-protected:
-    IInputPoller*           pInputPollerM = nullptr;
-    IFrameDispatcher*       pFrameDispatcherM = nullptr;
+protected:    
+    IFrameDispatcher*       pFrameDispatcherM;
+    IInputPoller*           pInputPollerM;
     std::vector<Polygon*>   activeShapesM;
     std::string             name;
     uint8                   activefont;

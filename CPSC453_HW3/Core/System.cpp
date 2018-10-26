@@ -19,7 +19,7 @@ notes:
 **********************************************************/
 static const uint16 WINDOW_WIDTH = 1000;
 static const uint16 WINDOW_HEIGHT = 1000;
-static const std::string WINDOW_NAME = "CPSC453_HW1";
+static const std::string WINDOW_NAME = "CPSC453_HW3";
 
 /**********************************************************
                        DECLARATIONS
