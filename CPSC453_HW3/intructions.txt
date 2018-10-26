@@ -6,6 +6,7 @@ Select CPSC453_HW3 in the solution explorer
 Switch to Release mode
 Menu -> Build -> Clean
 Menu -> Build -> Build
+Move libs/freetype.dll to ../Release
 
 To run: ctrl + F5
 
