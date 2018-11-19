@@ -2,7 +2,7 @@
 
 ------ Windows --------
 Open ../CPSC453_HW1.sln with visualstudio 2017
-Select CPSC453_HW2 in the solution explorer
+Select CPSC453_HW4 in the solution explorer
 Switch to Release mode
 Menu -> Build -> Clean
 Menu -> Build -> Build
@@ -14,21 +14,16 @@ To run: ctrl + F5
 In this folder:
 make clean
 make all
-./out/cpsc453_hw2.exe
+./out/cpsc453_hw4.exe
 
 (Tested on cpsc labs, other linux system may be missing libraries)
 
 ========= Usage Instructions ===========
 
-To select an image -> keys '1' through '7'
-To select a background -> shift + '1' through shift + '3'
-To change the active filter -> Right arrow/Left arrow.
-	Filters are in the order requested in the assignment. The names of filters are printed to console as they are selected.
-To select the size of the kernal for the bonus section -> Up arrow/Down arrow. Hold to quickly go into the hundreds.
-	The current size of the filter is printed every time it is changed.
+To select an scene -> keys '1' through '3'
 
-To scale the image, use the scroll wheel.
-To rotate the image, hold shift and use the scroll wheel.
-To pan the image, click and drag.
-	
-To exit, click the close button, or Alt + F4 (Windows). I didn't hook up the esc key.
+To Pan the camera (for realtime demonstration):
+w: Pan Up
+a: Pan Left
+s: Pan Down
+d: Pan Right
