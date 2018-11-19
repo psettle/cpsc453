@@ -30,7 +30,8 @@ constexpr auto DEFAULT_SCENE = 0;
 
 static const std::vector<std::string> sceneFiles = {
     "scenes/scene1.txt",
-    "scenes/scene2.txt"
+    "scenes/scene2.txt",
+    "scenes/scene3.txt"
 };
 
 RayTraceApp::RayTraceApp(IFrameDispatcher* frameDispatcher, IInputDispatcher* inputDispatcher)
@@ -58,10 +59,6 @@ void RayTraceApp::OnKey(GLint key, GLint action)
     case GLFW_KEY_1:
     case GLFW_KEY_2:
     case GLFW_KEY_3:
-    case GLFW_KEY_4:
-    case GLFW_KEY_5:
-    case GLFW_KEY_6:
-    case GLFW_KEY_7:
         SetScene(key - GLFW_KEY_1);
         break;
     default:
@@ -76,6 +73,6 @@ void RayTraceApp::SetScene(GLuint sceneID)
         delete pSceneM;
     }
 
-    pSceneM = new RayTraceScene(pFrameDispatcherM, sceneFiles[sceneID]);
+    pSceneM = new RayTraceScene(pFrameDispatcherM, pInputDispatcherM, sceneFiles[sceneID]);
 }
 

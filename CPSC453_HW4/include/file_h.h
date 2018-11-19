@@ -5,6 +5,8 @@
 */
 #ifndef FILE_H_H
 #define FILE_H_H
+#define _CRT_SECURE_NO_WARNINGS
+#pragma warning(disable:4996)
 #include<string>
 #include<fstream>
 #include<iostream>
@@ -42,7 +44,7 @@ inline std::string file_get_contents(const std::string& fileName) {
 	//otherwise throw an error
 	else
 	{
-		throw new std::exception("File doesn't exist");
+		std::cerr << "File doesn't exist" << std::endl;
 	}
 	//return the parsed string
 	return contents;
@@ -135,7 +137,7 @@ inline std::vector<std::string> explode(const char seperator, const std::string&
 
 /*
 	Gets the contents of a binary file into a vector of char
-	this function is very fast ~ 9ms/MB on my computer
+
 	@param fileName
 		The file to open
 	@return 
@@ -147,7 +149,7 @@ inline std::vector<char> binary_get_contents(const std::string& fileName) {
 
 	FILE* file;
 
-	fopen_s(&file, fileName.c_str(), "rb");
+    file = fopen(fileName.c_str(), "rb");
 
 	if (file == NULL) {
 		exit(1);
@@ -164,7 +166,6 @@ inline std::vector<char> binary_get_contents(const std::string& fileName) {
 	
 	delete[] buffer;
 
-	//return content;
 	return content;
 }
 

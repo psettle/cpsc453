@@ -26,5 +26,5 @@ typedef int sint32;
 typedef short sint16;
 typedef char sint8;
 
-#define WINDOW_WIDTH 500
-#define WINDOW_HEIGHT 500
+#define WINDOW_WIDTH 750
+#define WINDOW_HEIGHT 750

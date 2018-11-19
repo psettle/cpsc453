@@ -876,5 +876,6 @@
   <ItemGroup>
     <Text Include="scenes\scene1.txt" />
     <Text Include="scenes\scene2.txt" />
+    <Text Include="scenes\scene3.txt" />
   </ItemGroup>
 </Project>

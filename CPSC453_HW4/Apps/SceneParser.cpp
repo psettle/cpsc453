@@ -86,6 +86,11 @@ Scene SceneParser::ParseScene(const std::string& sceneFile)
             scene.lights.push_back(Light());
             scene.lights.back().position = ReadVector(tokens);
             break;
+        case PARSER_STATE_LIGHT_COLOUR:
+            scene.lights.back().colour = ReadVector(tokens);
+            break;
+        default:
+            break;
         }
 
         NextState(tokens);
@@ -242,7 +247,12 @@ void SceneParser::NextState(const std::vector<std::string>& tokens)
         parserState = PARSER_STATE_UNKNOWN;
         break;
     case PARSER_STATE_LIGHT_POINT:
+        parserState = PARSER_STATE_LIGHT_COLOUR;
+        break;
+    case PARSER_STATE_LIGHT_COLOUR:
         parserState = PARSER_STATE_UNKNOWN;
+        break;
+    default:
         break;
     }
 }

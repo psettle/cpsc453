@@ -1,0 +1,95 @@
+# ============================================================
+# Scene Two for Ray Tracing
+# CPSC 453 - Assignment #4 - Winter 2016
+#
+# This file contains the geometry of the scene only.
+# No materials are specified.
+#
+# Instructions for reading this file:
+#   - lines beginning with ‘#’ are comments
+#   - all objects are expressed in the camera reference frame
+#   - objects are described with the following parameters:
+#      - point light source has a single position
+#      - sphere has a centre and radius
+#      - plane has a unit normal and a point on the plane
+#      - triangle has positions of its three corners, in
+#        counter-clockwise order
+#   - syntax of the object specifications are as follows:
+#
+#      light    { x  y  z  }
+#      sphere   { x  y  z   r }
+#      plane    { xn yn zn  xq yq zq }
+#      triangle { x1 y1 z1  x2 y2 z2  x3 y3 z3 }
+#
+# Feel free to modify or extend this scene file to your desire
+# as you complete your ray tracing system.
+# ============================================================
+
+#lights
+light {
+  2 5 -7
+  0.0 0.0 1.0
+}
+
+light {
+  0 5 -10.46
+  0.0 1.0 0.0
+}
+
+light {
+  -2 5 -7
+  1.0 0.0 0.0
+}
+
+#triangle
+triangle {
+	1.1 0 -7.7855
+	-1.1 0 -7.855
+	0 0 -9.6907
+	0.5 0.5 0.5 0.5 1.0 1.0 128 0.3	#material
+}
+
+#grey sphere
+sphere {
+  0.0 0 -8.5
+  1.0
+  0.5 0.5 0.5 0.5 1.0 1.0 128 0.3	#material
+}
+
+# Floor (sloped to make the cast shadows more apparent)
+plane {
+  0 1 0.3
+  0 -2 -8.5
+  1.0 1.0 1.0 0.5 0.3 0.0 4 0.0	#material
+}
+
+#back wall
+plane {
+  0.0 -0.5 1
+  0 0 -19.5
+  1.0 0.0 0.0 0.2 0.2 0.0 4 0.5	#material
+}
+
+plane {
+  0.30 -0.5 1
+  0 0 -20
+  0.0 1.0 0.0 0.2 0.2 0.0 4 0.5	#material
+}
+
+plane {
+  0.6 -0.5 1
+  0 0 -21.45
+  0.0 0.0 1.0 0.2 0.2 0.0 4 0.5	#material
+}
+
+plane {
+  -0.30 -0.5 1
+  0 0 -20
+  0.0 1.0 0.0 0.2 0.2 0.0 4 0.5	#material
+}
+
+plane {
+  -0.6 -0.5 1
+  0 0 -21.45
+  0.0 0.0 1.0 0.2 0.2 0.0 4 0.5	#material
+}

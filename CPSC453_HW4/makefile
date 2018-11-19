@@ -15,18 +15,19 @@ INCLUDE += include/GLFW
 
 INCLUDE += Apps
 INCLUDE += Core
+INCLUDE += Polygon
 
 #source includes
 SOURCES += Core/AppManager.cpp
 SOURCES += Core/Shader.cpp
 SOURCES += Core/System.cpp
-SOURCES += Core/RenderPipeline.cpp
 SOURCES += Core/Texture.cpp
-SOURCES += Core/StbImage.cpp
-SOURCES += Core/StbImplementation.cpp
 
-SOURCES += Apps/ImagesApp.cpp
-SOURCES += Apps/Image.cpp
+SOURCES += Apps/RayTraceApp.cpp
+SOURCES += Apps/RayTraceScene.cpp
+SOURCES += Apps/SceneParser.cpp
+
+SOURCES += Polygon/Polygon.cpp
 
 #lib includes
 LIBS += -lglfw
@@ -37,7 +38,7 @@ LIBS += -ldl
 LIBS += -lpthread
 
 #more setup
-EXECUTABLE=out/cpsc453_hw2.exe
+EXECUTABLE=out/cpsc453_hw4.exe
 EXECUTABLE_MAIN=Core/main.cpp
 EXECUTABLE_MAIN_O=$(EXECUTABLE_MAIN:%.cpp=out/%.o)
 

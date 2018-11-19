@@ -115,9 +115,9 @@ struct Trace
 /* Distance to film */
 uniform float d;
 
-uniform vec3 camera_pos = vec3(0.0f);
-uniform vec3 camera_dir = vec3(0, 0, -1);
-uniform vec3 camera_up  = vec3(0, 1, 0);
+uniform vec3 camera_pos;
+uniform vec3 camera_dir;
+uniform vec3 camera_up;
 
 /* Sphere data */
 uniform uint   sphere_count;
@@ -162,32 +162,21 @@ Trace trace_ray(vec3 origin, vec3 direction, uint originID);
 
 void main()
 {
-	/* Calculate ray direction vector */
 	gl_Position = vec4(position, 1.0f);
 	
-	vec3 final_colour = vec3(1.0f);
-	vec3 origin = camera_pos;
-	
+	vec3 origin = camera_pos;	
 	vec3 centre_screen = origin + normalize(camera_dir) * d;
+	vec3 camera_ray = centre_screen + camera_up * position.y + normalize(cross(camera_dir, camera_up)) * position.x;
+	vec3 rayDir = normalize(camera_ray);
 	
-	vec3 rayDir = normalize(centre_screen + camera_up * position.y + normalize(cross(camera_dir, camera_up)) * position.x);
-	
-	uint objectID = uint(1000);
+	vec3  final_colour = vec3(0.0f);
+	uint  objectID = uint(1000);
 	float reflectivity = 1.0f;
-	
 	for(int i = 0; i < MAX_REFLECTS; ++i)
 	{
 		Trace trace = trace_ray(origin, rayDir, objectID);
 	
-		if(i == 0)
-		{
-			final_colour = trace.colour;
-		}
-		else
-		{
-			final_colour += trace.colour * reflectivity;
-		}
-		
+		final_colour += trace.colour * reflectivity;	
 		
 		if(!trace.exists || trace.material.reflectivity == 0.0f)
 		{
@@ -227,40 +216,43 @@ Trace trace_ray(vec3 origin, vec3 direction, uint originID)
 		ret.material = rayIntersect.material;
 	}
 	
-	vec3 lightDir = normalize(lights[0].position - rayIntersect.p);
+	vec3 ambientFactor = vec3(0.0f);
+	vec3 diffuseFactor = vec3(0.0f);
+	vec3 specularFactor = vec3(0.0f);
 	
-	float ambientFactor;
-	float diffuseFactor;
-	float specularFactor;
+	ambientFactor = vec3(rayIntersect.material.ambient);
 	
-	Intersect shadowIntersect = calculate_intersect(rayIntersect.p, lightDir, rayIntersect.objectID);
-	
-	if( ( shadowIntersect.exists ) &&
-		( shadowIntersect.t > 0 ) && 
-		( shadowIntersect.t < length(lights[0].position - rayIntersect.p) ) &&
-		( dot(rayIntersect.n, lightDir) > 0.0f ) )
+	for(uint i = uint(0); i < light_count; ++i)
 	{
-		//light blocked by other object
-		ret.colour = rayIntersect.material.colour * rayIntersect.material.ambient;
-	}
-	else
-	{
-		//normal lighting
-		ambientFactor = rayIntersect.material.ambient;
-		diffuseFactor = rayIntersect.material.diffuse * max(0, dot(rayIntersect.n, lightDir));
+		vec3 lightPos = lights[i].position;
+		vec3 lightColour = lights[i].colour;
+		vec3 lightDir = normalize(lightPos - rayIntersect.p);
 		
-		vec3 reflectedLightDir = normalize(-lightDir + 2 * dot(lightDir, rayIntersect.n) * rayIntersect.n);	
-		specularFactor = rayIntersect.material.specular * pow(max(0, dot(-direction, reflectedLightDir)), rayIntersect.material.specular_exp);
-			
-		ret.colour = rayIntersect.material.colour * (ambientFactor + diffuseFactor) + specularFactor * vec3(1.0f);
+		Intersect shadowIntersect = calculate_intersect(rayIntersect.p, lightDir, rayIntersect.objectID);
+		
+		bool shadowIntersectExists =
+			( shadowIntersect.exists ) &&	//did the shadow ray hit something
+			( shadowIntersect.t < length(lightPos - rayIntersect.p) ); //is that thing closer than the light source
+		
+		
+		vec3 h = normalize(lightDir - direction);
+
+		if(!shadowIntersectExists)
+		{
+			diffuseFactor += rayIntersect.material.diffuse * max(0, dot(rayIntersect.n, lightDir)) * lightColour;
+			specularFactor += rayIntersect.material.specular * pow(max(0, dot(h, rayIntersect.n)), rayIntersect.material.specular_exp) * lightColour;
+		}	
 	}
 	
+	ret.colour = rayIntersect.material.colour * (ambientFactor + diffuseFactor) + specularFactor;
+
 	return ret;
 }
 
 Intersect calculate_intersect(vec3 origin, vec3 direction, uint originID)
 {
 	Intersect ret;
+	ret.exists = false;
 	ret.t = MAX_DISTANCE;
 	ret.objectID = uint(1000);
 
@@ -276,6 +268,7 @@ Intersect calculate_intersect(vec3 origin, vec3 direction, uint originID)
 			ret.n = normalize(intersect.p0 - spheres[i].centre);
 			ret.material = spheres[i].material;
 			ret.objectID = objectID;
+			ret.exists = true;
 		}
 		
 		if(intersect.count > uint(2) && ret.t > intersect.t1 && objectID != originID && intersect.t1 > 0.0f)
@@ -285,6 +278,7 @@ Intersect calculate_intersect(vec3 origin, vec3 direction, uint originID)
 			ret.n = normalize(intersect.p1 - spheres[i].centre);
 			ret.material = spheres[i].material;
 			ret.objectID = objectID;
+			ret.exists = true;
 		}
 	}
 	
@@ -300,6 +294,7 @@ Intersect calculate_intersect(vec3 origin, vec3 direction, uint originID)
 			ret.n = normalize(planes[i].normal);
 			ret.material = planes[i].material;
 			ret.objectID = objectID;
+			ret.exists = true;
 		}
 	}
 
@@ -315,16 +310,8 @@ Intersect calculate_intersect(vec3 origin, vec3 direction, uint originID)
 			ret.n = normalize(cross(triangles[i].p1 - triangles[i].p0, triangles[i].p2 - triangles[i].p1));
 			ret.material = triangles[i].material;
 			ret.objectID = objectID;
+			ret.exists = true;
 		}
-	}
-	
-	if(ret.t < MAX_DISTANCE)
-	{
-		ret.exists = true;
-	}
-	else
-	{
-		ret.exists = false;
 	}
 	
 	return ret;

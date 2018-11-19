@@ -27,11 +27,13 @@ constexpr auto DEFAULT_FOV = DEFAULT_FOV_DEG * PI / 180.0f;
                        DEFINITIONS
 **********************************************************/
 
-RayTraceScene::RayTraceScene(IFrameDispatcher* frameDispatcher, const std::string& sceneFile)
-    : pFrameDispatcherM(frameDispatcher), fovM(DEFAULT_FOV)
+RayTraceScene::RayTraceScene(IFrameDispatcher* frameDispatcher, IInputDispatcher* inputDispatcher, const std::string& sceneFile)
+    : pFrameDispatcherM(frameDispatcher), pInputDispatcherM(inputDispatcher), fovM(DEFAULT_FOV)
 {
     InitializePixels();
     InitializeScene(sceneFile);
+
+    pInputDispatcherM->RegisterInputListener(this);
 }
 
 void RayTraceScene::InitializePixels()
@@ -90,6 +92,10 @@ void RayTraceScene::OnFrame()
     GLuint distance_to_film = glGetUniformLocation(Polygon::shader->GetProgramID(), "d");
     glUniform1f(distance_to_film, d);
 
+    /* Apply camera transformations */
+    camera_pos += camera_up * upSpeed;
+    camera_pos += normalize(glm::cross(camera_up, camera_dir)) * rightSpeed;
+
     SphereUniforms();
     PlaneUniforms();
     TriangleUniforms();
@@ -97,6 +103,48 @@ void RayTraceScene::OnFrame()
     CameraUniforms();
 
     Polygon::OnFrame();
+}
+
+void RayTraceScene::OnKey(GLint button, GLint action)
+{
+    if (action == GLFW_PRESS)
+    {
+        if (button == GLFW_KEY_A)
+        {
+            rightSpeed += 0.1f;
+        }
+        else if (button == GLFW_KEY_W)
+        {
+            upSpeed += 0.1f;
+        }
+        else if (button == GLFW_KEY_D)
+        {
+            rightSpeed -= 0.1f;
+        }
+        else if (button == GLFW_KEY_S)
+        {
+            upSpeed -= 0.1f;
+        }
+    }
+    else if (action == GLFW_RELEASE)
+    {
+        if (button == GLFW_KEY_A)
+        {
+            rightSpeed -= 0.1f;
+        }
+        else if (button == GLFW_KEY_W)
+        {
+            upSpeed -= 0.1f;
+        }
+        else if (button == GLFW_KEY_D)
+        {
+            rightSpeed += 0.1f;
+        }
+        else if (button == GLFW_KEY_S)
+        {
+            upSpeed += 0.1f;
+        }
+    }
 }
 
 void RayTraceScene::SphereUniforms()
@@ -206,6 +254,7 @@ void RayTraceScene::CameraUniforms()
 
 RayTraceScene::~RayTraceScene()
 {
+    pInputDispatcherM->UnregisterInputListener(this);
 }
 
 

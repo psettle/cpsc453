@@ -27,6 +27,7 @@
 
 light {
   0 2.5 -7.75
+  1.0 1.0 1.0
 }
 
 # Reflective grey sphere

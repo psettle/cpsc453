@@ -35,6 +35,7 @@ PARSER_STATE_PLANE_NORMAL,
 PARSER_STATE_PLANE_POINT,
 PARSER_STATE_PLANE_MATERIAL,
 PARSER_STATE_LIGHT_POINT,
+PARSER_STATE_LIGHT_COLOUR,
 
 PARSER_STATE_COUNT,
 PARSER_STATE_DEFAULT = PARSER_STATE_UNKNOWN
@@ -53,7 +54,7 @@ struct Material
 struct Light
 {
     glm::vec3 position;
-    glm::vec3 colour;
+    glm::vec3 colour = glm::vec3(1.0f);
 };
 
 struct Plane
