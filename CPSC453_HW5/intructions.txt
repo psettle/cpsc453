@@ -1,0 +1,29 @@
+======== Build Instructions ===========
+
+------ Windows --------
+Open ../CPSC453_HW1.sln with visualstudio 2017
+Select CPSC453_HW5 in the solution explorer
+Switch to Release mode
+Menu -> Build -> Clean
+Menu -> Build -> Build
+
+To run: ctrl + F5
+
+
+------ Linux ---------
+In this folder:
+make clean
+make all
+./out/cpsc453_hw5.exe
+
+(Tested on cpsc labs, other linux system may be missing libraries)
+
+========= Usage Instructions ===========
+
+To pan the camera: mouse controls
+To zoom the camera: scroll wheel
+To pause the animation: spacebar
+To resume the animation: spacebar
+To restart the animation: R
+To speed up the animation: right arrow
+To slow down the animation: left arrow
